@@ -91,7 +91,9 @@ extern "C" {
   */
 #define GPIO_AF3_SPI2          ((uint8_t)0x03U)  /*!< AF3: SPI2 Alternate Function mapping      */
 #define GPIO_AF3_USART2        ((uint8_t)0x03U)  /*!< AF3: USART2 Alternate Function mapping      */
+#if defined(USART3)
 #define GPIO_AF3_USART3        ((uint8_t)0x03U)  /*!< AF3: USART3 Alternate Function mapping      */
+#endif
 #define GPIO_AF3_USART1        ((uint8_t)0x03U)  /*!< AF3: USART1 Alternate Function mapping      */
 
 /**
@@ -108,8 +110,9 @@ extern "C" {
 #define GPIO_AF5_TIM17         ((uint8_t)0x05)  /*!< TIM17 Alternate Function mapping */
 #define GPIO_AF5_EVENTOUT      ((uint8_t)0x05)  /*!< EVENTOUT Alternate Function mapping */
 #define GPIO_AF5_MCO           ((uint8_t)0x05)  /*!< MCO Alternate Function mapping */
+#if defined(I2C2)
 #define GPIO_AF5_I2C2          ((uint8_t)0x05)  /*!< I2C2 Alternate Function mapping */
-
+#endif
 /**
   * @brief   AF 6 selection
   */
@@ -128,8 +131,9 @@ extern "C" {
   * @brief   AF 8 selection
   */
 #define GPIO_AF8_USART1        ((uint8_t)0x08U)  /*!< AF8: USART1 Alternate Function mapping      */
+#if defined(USART3)
 #define GPIO_AF8_USART3        ((uint8_t)0x08U)  /*!< AF8: USART3 Alternate Function mapping      */
-
+#endif
 /**
   * @brief   AF 9 selection
   */
@@ -145,16 +149,21 @@ extern "C" {
 /**
   * @brief   AF 11 selection
   */
+#if defined(I2C2)
 #define GPIO_AF11_I2C2          ((uint8_t)0x0B)  /*!< I2C2 Alternate Function mapping */
+#endif
+#if defined(USART3)
 #define GPIO_AF11_USART3        ((uint8_t)0x0B)  /*!< USART3 Alternate Function mapping */
+#endif
 #define GPIO_AF11_SPI2          ((uint8_t)0x0B)  /*!< SPI2 Alternate Function mapping */
 
 /**
   * @brief   AF 12 selection
   */
 #define GPIO_AF12_I2C1          ((uint8_t)0x0C)  /*!< I2C1 Alternate Function mapping */
+#if defined(I2C2)
 #define GPIO_AF12_I2C2          ((uint8_t)0x0C)  /*!< I2C2 Alternate Function mapping */
-
+#endif
 /**
   * @brief   AF 13 selection
   */
@@ -167,7 +176,9 @@ extern "C" {
   * @brief   AF 14 selection
   */
 #define GPIO_AF14_TIM1          ((uint8_t)0x0E)  /*!< TIM1 Alternate Function mapping */
+#if defined(I2C2)
 #define GPIO_AF14_I2C2          ((uint8_t)0x0E)  /*!< I2C2 Alternate Function mapping */
+#endif
 
 /**
   * @brief   AF 15 selection

@@ -115,8 +115,10 @@ static void APP_AdcConfig(void)
   LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
 
   /* Configure pins PA4/5/6/7 as analog inputs */
-  LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_4| LL_GPIO_PIN_5| LL_GPIO_PIN_6  \
-                     | LL_GPIO_PIN_7, LL_GPIO_MODE_ANALOG);
+  LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_4, LL_GPIO_MODE_ANALOG);
+  LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_5, LL_GPIO_MODE_ANALOG);
+  LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_6, LL_GPIO_MODE_ANALOG);
+  LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_7, LL_GPIO_MODE_ANALOG);
 
   /* ADC channel and clock source should be configured when ADEN=0, others should be configured when ADSTART=0 */
   /* Configure internal conversion channel */
@@ -131,8 +133,8 @@ static void APP_AdcConfig(void)
   /* Set data alignment to right */
   LL_ADC_SetDataAlignment(ADC1, LL_ADC_DATA_ALIGN_RIGHT);
 
-  /* Set low power mode */
-  LL_ADC_SetLowPowerMode(ADC1, LL_ADC_LP_AUTOWAIT);
+  /* Set low power mode none */
+  LL_ADC_SetLowPowerMode(ADC1, LL_ADC_LP_MODE_NONE);
 
   /* Set channel conversion time */
   LL_ADC_SetChannelSamplingTime(ADC1, LL_ADC_CHANNEL_4, LL_ADC_SAMPLINGTIME_41CYCLES_5);

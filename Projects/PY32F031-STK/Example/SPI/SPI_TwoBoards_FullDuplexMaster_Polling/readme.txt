@@ -67,6 +67,8 @@ data.
 导致主从机通信失败。
 2.主机模式可通过程序设置IO控制方式为DMA方式、中断方式和查询方式
 3.NSS引脚只需要在使用NSS硬件方式时连接（本样例使用的是NSS硬件方式）
+4.开发板焊接了FLASH器件，使用该样例建议去除R39/R41/R42/R43/R44五个电阻。没有焊接
+FLASH器件，无需关注这五个电阻。
 
 Note:
 1. You must press the slave reset button to make the slave program run first, 
@@ -76,4 +78,7 @@ otherwise, the communication between the host and slave will be fail
 interrupt mode and query mode
 3.NSS pins need to be connected only when using NSS hardware mode (this example 
 uses NSS hardware mode).
+4.The development board is soldered FLASH devices, the use of this sample is
+recommended to remove the five resistors R39/R41/R42/R43/R44. No FLASH device is
+soldered, no need to pay attention to these five resistors.
 ================================================================================

@@ -134,6 +134,7 @@ typedef struct
   * @{
   */
 
+#if defined(RCC_HSE_SUPPORT)
 /** @defgroup UTILS_EC_HSE_BYPASS HSE Bypass activation
   * @{
   */
@@ -142,7 +143,7 @@ typedef struct
 /**
   * @}
   */
-
+#endif
 /**
   * @}
   */
@@ -243,9 +244,11 @@ void        LL_SetSystemCoreClock(uint32_t HCLKFrequency);
 #if defined(RCC_PLL_SUPPORT)
 ErrorStatus LL_PLL_ConfigSystemClock_HSI(LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct,
                                          LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct);
+#if defined(RCC_HSE_SUPPORT)                                         
 ErrorStatus LL_PLL_ConfigSystemClock_HSE(uint32_t HSEFrequency, uint32_t HSEBypass,
                                          LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct, 
                                          LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct);
+#endif
 #endif
 ErrorStatus LL_SetFlashLatency(uint32_t HCLKFrequency);
 

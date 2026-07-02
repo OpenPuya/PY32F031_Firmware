@@ -128,8 +128,12 @@ typedef void (*pOPA_CallbackTypeDef)(OPA_HandleTypeDef *hopa);
 /** @defgroup OPA_PART OPA PART
   * @{
   */
+#if defined(OPA_CR_OPA1EN)
 #define OPA1   0x00000000
+#endif
+#if defined(OPA_CR_OPA2EN)
 #define OPA2   0x00000001
+#endif
 /**
   * @}
   */ 

@@ -32,20 +32,15 @@
 #include "main.h"
 
 /* Private define ------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef UartHandle;
-uint8_t RxBuf[RX_MAX_LEN] = {0}; /* Receive buffer */
-uint32_t RxLen = 0;     /* Single frame data, actual received data length */
-__IO uint32_t CheckFlag = 0; /* After the hardware detects an idle frame, the
-                           "End of single frame data reception" check flag */
-uint32_t CheckLen = 0;  /* Used to determine whether new data has arrived within
-                           the timeout period */
-uint32_t TickStart = 0; /* Used for timeout judgment */
+
+/* Private variables ---------------------------------------------------------*/
+uint8_t aRxBuffer[RX_MAX_LEN] = {0}; /* Receive buffer */
+uint32_t cRxIndex = 0;     /* Single frame data, actual received data length */
 
 /* Private user code ---------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-void APP_UartRxTimeOut(void);
 
 /**
   * @brief  Main program
@@ -55,6 +50,8 @@ int main(void)
 {
   /* Reset of all peripherals, Initializes the Systick */
   HAL_Init();
+  
+  BSP_LED_Init(LED_GREEN);
   
   /* Initialize USART */
   UartHandle.Instance          = USART2;
@@ -67,49 +64,25 @@ int main(void)
   UartHandle.Init.OverSampling = UART_OVERSAMPLING_16;
   UartHandle.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
   HAL_UART_Init(&UartHandle);
-  
-  /* Enable idle frame interrupt */
-  __HAL_UART_ENABLE_IT(&UartHandle, UART_IT_IDLE);
-  
+
   /* Enable RXNE interrupt */
   __HAL_UART_ENABLE_IT(&UartHandle, UART_IT_RXNE);
 
   while (1)
   {
-    /* Uart receive timeout check */
-    APP_UartRxTimeOut();
+
   }
 }
 
 /**
-  * @brief  Uart receive timeout check.
-  * @param  None.
+  * @brief  USART Error interrupt handler function
+  * @param  None
   * @retval None
   */
-void APP_UartRxTimeOut(void)
+void APP_UsartErrorCallback(void)
 {
-  /* Received an idle frame and turned on the check to see
-     if "single frame data reception ended" */
-  if (CheckFlag == 1)
-  {
-    /* If the 'timeout time' is exceeded,
-       it is considered that receiving one frame of data has ended */
-    if ((HAL_GetTick() - TickStart) > RX_TIMEOUT)
-    {
-      /* Send back received data */      
-      HAL_UART_Transmit(&UartHandle, (uint8_t *)&RxBuf, RxLen, 5000);
-      
-      /* Enable next data reception */
-      CheckFlag = 0;
-      RxLen = 0;
-    }
-    
-    /* Received new data, continue receiving data */
-    if (CheckLen != RxLen)
-    {
-      CheckFlag = 0;
-    }
-  }
+  /* Turn on the LED */
+  BSP_LED_On(LED_GREEN);
 }
 
 /**

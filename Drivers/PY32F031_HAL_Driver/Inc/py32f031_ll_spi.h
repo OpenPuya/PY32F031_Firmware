@@ -1318,7 +1318,6 @@ typedef struct
   * @{
   */
 
-#define LL_I2S_AUDIOFREQ_192K              192000U       /*!< Audio Frequency configuration 192000 Hz       */
 #define LL_I2S_AUDIOFREQ_96K               96000U        /*!< Audio Frequency configuration  96000 Hz       */
 #define LL_I2S_AUDIOFREQ_48K               48000U        /*!< Audio Frequency configuration  48000 Hz       */
 #define LL_I2S_AUDIOFREQ_44K               44100U        /*!< Audio Frequency configuration  44100 Hz       */
@@ -1459,7 +1458,7 @@ __STATIC_INLINE uint32_t LL_I2S_GetDataFormat(SPI_TypeDef *SPIx)
   */
 __STATIC_INLINE void LL_I2S_SetClockPolarity(SPI_TypeDef *SPIx, uint32_t ClockPolarity)
 {
-  SET_BIT(SPIx->I2SCFGR, ClockPolarity);
+  MODIFY_REG(SPIx->I2SCFGR, SPI_I2SCFGR_CKPOL, ClockPolarity);
 }
 
 /**

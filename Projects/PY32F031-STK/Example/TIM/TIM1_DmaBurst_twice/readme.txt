@@ -32,13 +32,13 @@ GCC Version: GNU Arm Embedded Toolchain 10.3-2021.10
 使用步骤：
 1. 下载并运行程序
 2. 通过逻辑分析仪示波器捕捉PA0上翻转间隔
-3. 翻转间隔从400ms,接着变为2ms,最后变为200us
+3. 翻转间隔从400ms,接着变为20ms,最后变为200us
 4. 变为200us后，翻转间隔均为200us
 
 Example execution steps:
 1. compile and download the program to MCU and run it;
 2. Capture the turnover interval on PA0 through the logic analyzer oscilloscope
-3. The turnover interval changed from 400ms, then to 2ms, and finally to 200us
+3. The turnover interval changed from 400ms, then to 20ms, and finally to 200us
 4. After the value is changed to 200us, the turnover interval is always 200us
 ================================================================================
 注意事项：

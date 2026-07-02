@@ -94,7 +94,7 @@ void SysTick_Handler(void)
   */
 void RTC_IRQHandler(void)
 {
-  HAL_RTCEx_RTCIRQHandler(&RTCinit);
+  HAL_RTCEx_RTCIRQHandler(&RtcHandle);
 }
 
 /************************ (C) COPYRIGHT Puya *****END OF FILE******************/

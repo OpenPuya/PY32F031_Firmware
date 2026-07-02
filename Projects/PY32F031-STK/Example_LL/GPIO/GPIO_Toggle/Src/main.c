@@ -58,13 +58,13 @@ int main(void)
   APP_GpioConfig();
 
   /* Turn off LED */
-  LL_GPIO_SetOutputPin(LED_GPIO_PORT, LED3_PIN);
+  LL_GPIO_SetOutputPin(LED_GPIO_PORT, LED_GPIO_PIN);
 
   while (1)
   {
     /* LED blinking */
     LL_mDelay(100);
-    LL_GPIO_TogglePin(LED_GPIO_PORT, LED3_PIN);
+    LL_GPIO_TogglePin(LED_GPIO_PORT, LED_GPIO_PIN);
   }
 }
 
@@ -109,13 +109,13 @@ static void APP_GpioConfig(void)
   LED_GPIO_CLK_ENABLE();
 
   /* Configure LED pin as output */
-  LL_GPIO_SetPinMode(LED_GPIO_PORT, LED3_PIN, LL_GPIO_MODE_OUTPUT);
+  LL_GPIO_SetPinMode(LED_GPIO_PORT, LED_GPIO_PIN, LL_GPIO_MODE_OUTPUT);
   /* Default (after reset) is push-pull output */
-  /* LL_GPIO_SetPinOutputType(LED_GPIO_PORT, LED3_PIN, LL_GPIO_OUTPUT_PUSHPULL); */
+  /* LL_GPIO_SetPinOutputType(LED_GPIO_PORT, LED_GPIO_PIN, LL_GPIO_OUTPUT_PUSHPULL); */
   /* Default (after reset) is very low output speed */
-  /* LL_GPIO_SetPinSpeed(LED_GPIO_PORT, LED3_PIN, LL_GPIO_SPEED_FREQ_LOW); */
+  /* LL_GPIO_SetPinSpeed(LED_GPIO_PORT, LED_GPIO_PIN, LL_GPIO_SPEED_FREQ_LOW); */
   /* Default (after reset) is no pull-up or pull-down */
-  /* LL_GPIO_SetPinPull(LED_GPIO_PORT, LED3_PIN, LL_GPIO_PULL_NO); */
+  /* LL_GPIO_SetPinPull(LED_GPIO_PORT, LED_GPIO_PIN, LL_GPIO_PULL_NO); */
 }
 
 /**

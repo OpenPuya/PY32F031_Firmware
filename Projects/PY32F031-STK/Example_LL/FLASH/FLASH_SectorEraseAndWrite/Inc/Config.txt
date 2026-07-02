@@ -1,0 +1,10 @@
+[FilePath]
+0=../../../../../../Drivers/PY32F031_HAL_Driver/Src/py32f031_ll_utils.c
+[FileName]
+0=py32f031_ll_utils.c
+[Define]
+0=USE_HAL_DRIVER
+1=PY32F031x8
+[User]
+0=../Src/main.c
+1=../Src/py32f031_it.c

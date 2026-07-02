@@ -80,7 +80,7 @@ static void APP_EnableLSI(void)
   /* Configure the clock sources: LSI */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI;
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;                                                      /* Enable LSI */
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;                                                /*  Do not configure PLL */
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;                                                /* Do not configure PLL */
   /* Initialize RCC oscillator */
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {

@@ -255,8 +255,9 @@ typedef struct
 #define LL_GPIO_AF3_SPI2          LL_GPIO_AF_3   /*!< AF3: SPI2 Alternate Function mapping*/
 #define LL_GPIO_AF3_USART1        LL_GPIO_AF_3   /*!< AF3: USART1 Alternate Function mapping*/
 #define LL_GPIO_AF3_USART2        LL_GPIO_AF_3   /*!< AF3: USART2 Alternate Function mapping*/
+#if defined(USART3)
 #define LL_GPIO_AF3_USART3        LL_GPIO_AF_3   /*!< AF3: USART3 Alternate Function mapping*/
-
+#endif
 /**
   * @brief   AF 4 selection
   */
@@ -271,8 +272,9 @@ typedef struct
 #define LL_GPIO_AF5_TIM16         LL_GPIO_AF_5   /*!< TIM16 Alternate Function mapping*/
 #define LL_GPIO_AF5_TIM17         LL_GPIO_AF_5   /*!< TIM17 Alternate Function mapping*/
 #define LL_GPIO_AF5_MCO           LL_GPIO_AF_5   /*!< MCO Alternate Function mapping*/
+#if defined(I2C2)
 #define LL_GPIO_AF5_I2C2          LL_GPIO_AF_5   /*!< I2C2 Alternate Function mapping*/
-
+#endif
 /**
   * @brief   AF 6 selection
   */
@@ -291,8 +293,9 @@ typedef struct
   * @brief   AF 8 selection
   */
 #define LL_GPIO_AF8_USART1        LL_GPIO_AF_8   /*!< AF8: USART1 Alternate Function mapping*/
+#if defined(USART3)
 #define LL_GPIO_AF8_USART3        LL_GPIO_AF_8   /*!< AF8: USART3 Alternate Function mapping*/
-
+#endif
 /**
   * @brief   AF 9 selection
   */
@@ -308,16 +311,21 @@ typedef struct
 /**
   * @brief   AF 11 selection
   */
+#if defined(I2C2)
 #define LL_GPIO_AF11_I2C2         LL_GPIO_AF_11  /*!< I2C2 Alternate Function mapping*/
+#endif
+#if defined(USART3)
 #define LL_GPIO_AF11_USART3       LL_GPIO_AF_11  /*!< USART3 Alternate Function mapping*/
+#endif
 #define LL_GPIO_AF11_SPI2         LL_GPIO_AF_11  /*!< SPI2 Alternate Function mapping*/
 
 /**
   * @brief   AF 12 selection
   */
 #define LL_GPIO_AF12_I2C1         LL_GPIO_AF_12  /*!< I2C1 Alternate Function mapping*/
+#if defined(I2C2)
 #define LL_GPIO_AF12_I2C2         LL_GPIO_AF_12  /*!< I2C2 Alternate Function mapping*/
-
+#endif
 /**
   * @brief   AF 13 selection
   */
@@ -330,8 +338,9 @@ typedef struct
   * @brief   AF 14 selection
   */
 #define LL_GPIO_AF14_TIM1         LL_GPIO_AF_14  /*!< TIM1 Alternate Function mapping*/
+#if defined(I2C2)
 #define LL_GPIO_AF14_I2C2         LL_GPIO_AF_14  /*!< I2C2 Alternate Function mapping*/
-
+#endif
 /**
   * @brief   AF 15 selection
   */

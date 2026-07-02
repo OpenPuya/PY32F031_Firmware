@@ -118,16 +118,22 @@ static void APP_SystemClockConfig(void)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /* Configure clock source: HSE/HSI/LSE/LSI */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE;
+  /* Oscillator configuration */
+#if defined(RCC_LSE_SUPPORT)
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE; /* Select oscillator HSE, HSI, LSI, LSE */
+#else
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI; /* Select oscillator HSE, HSI, LSI */
+#endif
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;                                                    /* Enable HSI */
   RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;                                                    /* No HSI division */
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_16MHz;                           /* Configure HSI output clock as 16MHz */
   RCC_OscInitStruct.HSEState = RCC_HSE_OFF;                                                   /* Disable HSE */
   RCC_OscInitStruct.HSEFreq = RCC_HSE_16_32MHz;                                               /* HSE crystal frequency range: 16MHz - 32MHz */
   RCC_OscInitStruct.LSIState = RCC_LSI_OFF;                                                   /* Disable LSI */
-  RCC_OscInitStruct.LSEState = RCC_LSE_OFF;                                                   /* Disable LSE */
+#if defined(RCC_LSE_SUPPORT)
+  RCC_OscInitStruct.LSEState = RCC_LSE_OFF;                         /* Close LSE */
   RCC_OscInitStruct.LSEDriver = RCC_LSEDRIVE_MEDIUM;                                          /* Default LSE drive capability */
+#endif
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;                                                /* Enable PLL */
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;                                        /* Select PLL source as HSI */
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)

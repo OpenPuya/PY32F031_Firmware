@@ -98,7 +98,7 @@ static void APP_ADCConfig(void)
   AdcHandle.Init.DataAlign             = ADC_DATAALIGN_RIGHT;                     /* Right-alignment for converted data */
   AdcHandle.Init.ScanConvMode          = ADC_SCAN_DIRECTION_FORWARD;              /* Scan sequence direction: forward */
   AdcHandle.Init.EOCSelection          = ADC_EOC_SINGLE_CONV;                     /* Single Conversion */
-  AdcHandle.Init.LowPowerAutoWait      = ENABLE;                                  /* Auto-delayed conversion feature enabled */
+  AdcHandle.Init.LowPowerAutoWait      = DISABLE;                                 /* Auto-delayed conversion feature disable */
   AdcHandle.Init.ContinuousConvMode    = DISABLE;                                 /* Continuous mode disabled to have only 1 conversion at each conversion trig */
   AdcHandle.Init.DiscontinuousConvMode = DISABLE;                                 /* Disable discontinuous mode */
   AdcHandle.Init.ExternalTrigConv      = ADC_EXTERNALTRIGCONV_T1_TRGO;            /* Set the external trigger for conversion start event to TIM1_TRGO */

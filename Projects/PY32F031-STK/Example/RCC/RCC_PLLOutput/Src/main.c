@@ -78,18 +78,24 @@ static void APP_SystemClockConfig(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /* Oscillator configuration */
+#if defined(RCC_LSE_SUPPORT)
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE; /* Select oscillator HSE, HSI, LSI, LSE */
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;                          /* Enable HSI */
-  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;                          /* HSI 1 frequency division */
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_16MHz;  /* Configure HSI clock 16MHz */
-  RCC_OscInitStruct.HSEState = RCC_HSE_OFF;                         /* Close HSE */
+#else
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI; /* Select oscillator HSE, HSI, LSI */
+#endif
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;                           /* Enable HSI */
+  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;                           /* HSI 1 frequency division */
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_24MHz;  /* Configure HSI clock 24MHz */
+  RCC_OscInitStruct.HSEState = RCC_HSE_OFF;                          /* Close HSE */
   /*RCC_OscInitStruct.HSEFreq = RCC_HSE_16_32MHz;*/
-  RCC_OscInitStruct.LSIState = RCC_LSI_OFF;                         /* Close LSI */
+  RCC_OscInitStruct.LSIState = RCC_LSI_OFF;                          /* Close LSI */
+#if defined(RCC_LSE_SUPPORT)
   RCC_OscInitStruct.LSEState = RCC_LSE_OFF;                         /* Close LSE */
   /*RCC_OscInitStruct.LSEDriver = RCC_LSEDRIVE_MEDIUM;*/
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;                     /* Open PLL */
+#endif
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;                       /* Open PLL */
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL3;
   /* Configure oscillator */
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -102,7 +108,7 @@ static void APP_SystemClockConfig(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;     /* AHB clock 1 division */
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;      /* APB clock 1 division */
   /* Configure clock source */
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     APP_ErrorHandler();
   }

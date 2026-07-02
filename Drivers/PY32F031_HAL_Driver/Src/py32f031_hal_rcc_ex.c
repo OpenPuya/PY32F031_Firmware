@@ -315,11 +315,13 @@ uint32_t HAL_RCCEx_GetPeriphCLKFreq(uint32_t PeriphClk)
       frequency = LSE_VALUE;
     }
 #endif
+#if defined(RCC_HSE_SUPPORT)
     /* Check if HSE is ready  and if RTC clock selection is HSI_DIV32*/
     else if ((HAL_IS_BIT_SET(RCC->CR, RCC_CR_HSERDY)) &&(srcclk == RCC_RTCCLKSOURCE_HSE_DIV128))
     {
       frequency = HSE_VALUE / 128U;
     }
+#endif
     /* Clock not enabled for RTC*/
     else
     {

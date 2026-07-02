@@ -58,12 +58,13 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
   RCC_OscInitTypeDef        RCC_OscInitStruct = {0};
   RCC_PeriphCLKInitTypeDef  PeriphClkInitStruct = {0};
 
+  /* Configure LSE/LSI as RTC clock source */
 #ifdef RTC_CLOCK_SOURCE_LSE
-  RCC_OscInitStruct.OscillatorType =  RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE;
+  #if defined(RCC_LSE_SUPPORT)
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.LSEDriver = RCC_LSEDRIVE_MEDIUM;
-  RCC_OscInitStruct.LSIState = RCC_LSI_OFF;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
   }
@@ -73,13 +74,14 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
   }
+  #else
+  #error This device does NOT support LSE
+  #endif
 #elif defined (RTC_CLOCK_SOURCE_LSI)
   /* Configure LSI as the clock source */
-  RCC_OscInitStruct.OscillatorType =  RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.OscillatorType =  RCC_OSCILLATORTYPE_LSI;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;
-  RCC_OscInitStruct.LSEState = RCC_LSE_OFF;
-  /*RCC_OscInitStruct.LSEDriver = RCC_LSEDRIVE_MEDIUM;*/
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
   }

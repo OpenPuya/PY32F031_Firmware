@@ -74,7 +74,7 @@ int main(void)
   LL_CORDIC_SetStart(CORDIC);
   
   /* Waiting for calculation to complete */
-  while (LL_CORDIC_IsActiveFlag_CCFF(CORDIC) == 1)
+  while (LL_CORDIC_IsActiveFlag_CCFF(CORDIC) == 0)
   {
   }
   

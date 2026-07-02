@@ -68,17 +68,35 @@ extern "C" {
 /** @addtogroup RCC_Private_Macros
   * @{
   */
+#if defined(RCC_LSE_SUPPORT) && defined(RCC_HSE_SUPPORT) 
 #define IS_RCC_OSCILLATORTYPE(__OSCILLATOR__) (((__OSCILLATOR__) == RCC_OSCILLATORTYPE_NONE)                           || \
                                                (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_HSE) == RCC_OSCILLATORTYPE_HSE) || \
                                                (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_HSI) == RCC_OSCILLATORTYPE_HSI) || \
                                                (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_LSI) == RCC_OSCILLATORTYPE_LSI) || \
                                                (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_LSE) == RCC_OSCILLATORTYPE_LSE))
+#elif defined(RCC_HSE_SUPPORT)
+#define IS_RCC_OSCILLATORTYPE(__OSCILLATOR__) (((__OSCILLATOR__) == RCC_OSCILLATORTYPE_NONE)                           || \
+                                               (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_HSE) == RCC_OSCILLATORTYPE_HSE) || \
+                                               (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_HSI) == RCC_OSCILLATORTYPE_HSI) || \
+                                               (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_LSI) == RCC_OSCILLATORTYPE_LSI))
+#elif defined(RCC_LSE_SUPPORT)
+#define IS_RCC_OSCILLATORTYPE(__OSCILLATOR__) (((__OSCILLATOR__) == RCC_OSCILLATORTYPE_NONE)                           || \
+                                               (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_LSE) == RCC_OSCILLATORTYPE_LSE) || \
+                                               (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_HSI) == RCC_OSCILLATORTYPE_HSI) || \
+                                               (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_LSI) == RCC_OSCILLATORTYPE_LSI))
+#else
+#define IS_RCC_OSCILLATORTYPE(__OSCILLATOR__) (((__OSCILLATOR__) == RCC_OSCILLATORTYPE_NONE)                           || \
+                                               (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_HSI) == RCC_OSCILLATORTYPE_HSI) || \
+                                               (((__OSCILLATOR__) & RCC_OSCILLATORTYPE_LSI) == RCC_OSCILLATORTYPE_LSI))                                                                                              
+#endif
 
+#if defined(RCC_HSE_SUPPORT)
 #define IS_RCC_HSE(__HSE__)          (((__HSE__) == RCC_HSE_OFF) || ((__HSE__) == RCC_HSE_ON) || \
                                       ((__HSE__) == RCC_HSE_BYPASS))
 
 #define IS_RCC_HSE_FREQ(__FREQ__)    (((__FREQ__) == RCC_HSE_4_8MHz) || ((__FREQ__) == RCC_HSE_8_16MHz) || \
                                       ((__FREQ__) == RCC_HSE_16_32MHz))
+#endif
 
 #if defined(RCC_LSE_SUPPORT)
 #define IS_RCC_LSE(__LSE__)          (((__LSE__) == RCC_LSE_OFF) || ((__LSE__) == RCC_LSE_ON) || \
@@ -104,20 +122,39 @@ extern "C" {
 #define IS_RCC_PLL(__PLL__)               (((__PLL__) == RCC_PLL_NONE) ||((__PLL__) == RCC_PLL_OFF) || \
                                            ((__PLL__) == RCC_PLL_ON))
 
+#if defined(RCC_HSE_SUPPORT)
 #define IS_RCC_PLLSOURCE(__SOURCE__)      (((__SOURCE__) == RCC_PLLSOURCE_HSI)  || \
                                            ((__SOURCE__) == RCC_PLLSOURCE_HSE))
+#else
+#define IS_RCC_PLLSOURCE(__SOURCE__)      ((__SOURCE__) == RCC_PLLSOURCE_HSI)                                         
+#endif
 
 #define IS_RCC_PLL_MUL(__MUL__)            (((__MUL__) == RCC_PLL_MUL2) || \
                                            ((__MUL__) == RCC_PLL_MUL3))
 #endif
                                          
 #define IS_RCC_CLOCKTYPE(__CLK__)         ((((__CLK__) & RCC_CLOCKTYPE_ALL) != 0x00UL) && (((__CLK__) & ~RCC_CLOCKTYPE_ALL) == 0x00UL))
-
+#if defined(RCC_LSE_SUPPORT) && defined(RCC_HSE_SUPPORT)
 #define IS_RCC_SYSCLKSOURCE(__SOURCE__)   (((__SOURCE__) == RCC_SYSCLKSOURCE_HSISYS)  || \
                                             ((__SOURCE__) == RCC_SYSCLKSOURCE_HSE)  || \
                                             ((__SOURCE__) == RCC_SYSCLKSOURCE_LSE)  || \
                                             ((__SOURCE__) == RCC_SYSCLKSOURCE_LSI)  || \
                                             ((__SOURCE__) == RCC_SYSCLKSOURCE_PLLCLK))
+#elif defined(RCC_HSE_SUPPORT)
+#define IS_RCC_SYSCLKSOURCE(__SOURCE__)   (((__SOURCE__) == RCC_SYSCLKSOURCE_HSISYS)  || \
+                                            ((__SOURCE__) == RCC_SYSCLKSOURCE_HSE)  || \
+                                            ((__SOURCE__) == RCC_SYSCLKSOURCE_LSI)  || \
+                                            ((__SOURCE__) == RCC_SYSCLKSOURCE_PLLCLK))
+#elif defined(RCC_LSE_SUPPORT)
+#define IS_RCC_SYSCLKSOURCE(__SOURCE__)   (((__SOURCE__) == RCC_SYSCLKSOURCE_HSISYS)  || \
+                                            ((__SOURCE__) == RCC_SYSCLKSOURCE_LSE)  || \
+                                            ((__SOURCE__) == RCC_SYSCLKSOURCE_LSI)  || \
+                                            ((__SOURCE__) == RCC_SYSCLKSOURCE_PLLCLK))
+#else
+#define IS_RCC_SYSCLKSOURCE(__SOURCE__)   (((__SOURCE__) == RCC_SYSCLKSOURCE_HSISYS) || \
+                                            ((__SOURCE__) == RCC_SYSCLKSOURCE_LSI)  || \
+                                            ((__SOURCE__) == RCC_SYSCLKSOURCE_PLLCLK))                                                                                        
+#endif
 
 #define IS_RCC_HCLK(__HCLK__)             (((__HCLK__) == RCC_SYSCLK_DIV1)   || ((__HCLK__) == RCC_SYSCLK_DIV2)   || \
                                            ((__HCLK__) == RCC_SYSCLK_DIV4)   || ((__HCLK__) == RCC_SYSCLK_DIV8)   || \
@@ -128,11 +165,23 @@ extern "C" {
 #define IS_RCC_PCLK(__PCLK__)             (((__PCLK__) == RCC_HCLK_DIV1) || ((__PCLK__) == RCC_HCLK_DIV2) || \
                                            ((__PCLK__) == RCC_HCLK_DIV4) || ((__PCLK__) == RCC_HCLK_DIV8) || \
                                            ((__PCLK__) == RCC_HCLK_DIV16))
-
+#if defined(RCC_LSE_SUPPORT) && defined(RCC_HSE_SUPPORT)
 #define IS_RCC_RTCCLKSOURCE(__SOURCE__)   (((__SOURCE__) == RCC_RTCCLKSOURCE_NONE) || \
                                            ((__SOURCE__) == RCC_RTCCLKSOURCE_LSE) || \
                                            ((__SOURCE__) == RCC_RTCCLKSOURCE_LSI) || \
                                            ((__SOURCE__) == RCC_RTCCLKSOURCE_HSE_DIV128))
+#elif defined(RCC_HSE_SUPPORT)
+#define IS_RCC_RTCCLKSOURCE(__SOURCE__)   (((__SOURCE__) == RCC_RTCCLKSOURCE_NONE) || \
+                                           ((__SOURCE__) == RCC_RTCCLKSOURCE_LSI) || \
+                                           ((__SOURCE__) == RCC_RTCCLKSOURCE_HSE_DIV128))
+#elif defined(RCC_LSE_SUPPORT)
+#define IS_RCC_RTCCLKSOURCE(__SOURCE__)   (((__SOURCE__) == RCC_RTCCLKSOURCE_NONE) || \
+                                           ((__SOURCE__) == RCC_RTCCLKSOURCE_LSI) || \
+                                           ((__SOURCE__) == RCC_RTCCLKSOURCE_LSE))
+#else
+#define IS_RCC_RTCCLKSOURCE(__SOURCE__)   (((__SOURCE__) == RCC_RTCCLKSOURCE_NONE) || \
+                                           ((__SOURCE__) == RCC_RTCCLKSOURCE_LSI))
+#endif
 
 #define IS_RCC_MCO(__MCOX__)              (((__MCOX__) == RCC_MCO1) || \
                                            ((__MCOX__) == RCC_MCO2) || \
@@ -143,7 +192,7 @@ extern "C" {
                                            ((__MCOX__) == RCC_MCO7) || \
                                            ((__MCOX__) == RCC_MCO8))
 
-
+#if defined(RCC_LSE_SUPPORT) && defined(RCC_HSE_SUPPORT)
 #define IS_RCC_MCOSOURCE(__SOURCE__) (((__SOURCE__) == RCC_MCOSOURCE_NOCLOCK) || \
                                        ((__SOURCE__) == RCC_MCOSOURCE_SYSCLK) || \
                                        ((__SOURCE__) == RCC_MCOSOURCE_HSI10M) || \
@@ -154,6 +203,36 @@ extern "C" {
                                        ((__SOURCE__) == RCC_MCOSOURCE_LSE) || \
                                        ((__SOURCE__) == RCC_MCOSOURCE_HCLK) || \
                                        ((__SOURCE__) == RCC_MCOSOURCE_PCLK))
+#elif defined(RCC_HSE_SUPPORT)
+#define IS_RCC_MCOSOURCE(__SOURCE__) (((__SOURCE__) == RCC_MCOSOURCE_NOCLOCK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_SYSCLK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HSI10M) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HSI) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HSE) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_PLLCLK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_LSI) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HCLK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_PCLK))
+#elif defined(RCC_LSE_SUPPORT)
+#define IS_RCC_MCOSOURCE(__SOURCE__) (((__SOURCE__) == RCC_MCOSOURCE_NOCLOCK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_SYSCLK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HSI10M) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HSI) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_LSE) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_PLLCLK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_LSI) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HCLK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_PCLK))
+#else
+#define IS_RCC_MCOSOURCE(__SOURCE__) (((__SOURCE__) == RCC_MCOSOURCE_NOCLOCK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_SYSCLK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HSI10M) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HSI) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_PLLCLK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_LSI) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_HCLK) || \
+                                       ((__SOURCE__) == RCC_MCOSOURCE_PCLK))                                                                             
+#endif
 
 #define IS_RCC_MCODIV(__DIV__)        (((__DIV__) == RCC_MCODIV_1) || ((__DIV__) == RCC_MCODIV_2) || \
                                        ((__DIV__) == RCC_MCODIV_4) || ((__DIV__) == RCC_MCODIV_8) || \
@@ -196,12 +275,13 @@ typedef struct
 {
   uint32_t OscillatorType;       /*!< The oscillators to be configured.
                                       This parameter can be a value of @ref RCC_Oscillator_Type                   */
-
+#if defined(RCC_HSE_SUPPORT)
   uint32_t HSEState;             /*!< The new state of the HSE.
                                       This parameter can be a value of @ref RCC_HSE_Config                        */
 
   uint32_t HSEFreq;              /*!< The frequency range of the HSE.
                                       This parameter can be a value of @ref RCC_HSE_Freq                          */
+#endif                                      
 #if defined(RCC_LSE_SUPPORT)
   uint32_t LSEState;             /*!< The new state of the LSE.
                                       This parameter can be a value of @ref RCC_LSE_Config                        */
@@ -270,7 +350,9 @@ typedef struct
   * @{
   */
 #define RCC_OSCILLATORTYPE_NONE        0x00000000U   /*!< Oscillator configuration unchanged */
+#if defined(RCC_HSE_SUPPORT)
 #define RCC_OSCILLATORTYPE_HSE         0x00000001U   /*!< HSE to configure */
+#endif
 #define RCC_OSCILLATORTYPE_HSI         0x00000002U   /*!< HSI to configure */
 #if defined(RCC_LSE_SUPPORT)
 #define RCC_OSCILLATORTYPE_LSE         0x00000004U   /*!< LSE to configure */
@@ -279,7 +361,7 @@ typedef struct
 /**
   * @}
   */
-
+#if defined(RCC_HSE_SUPPORT)
 /** @defgroup RCC_HSE_Config HSE Config
   * @{
   */
@@ -311,7 +393,7 @@ typedef struct
 /**
   * @}
   */
-
+#endif
 #if defined(RCC_LSE_SUPPORT)
 /** @defgroup RCC_LSE_Config LSE Config
   * @{
@@ -404,7 +486,9 @@ typedef struct
   * @{
   */
 #define RCC_PLLSOURCE_HSI              RCC_PLLCFGR_PLLSRC_HSI  /*!< HSI clock selected as PLL entry clock source */
+#if defined(RCC_HSE_SUPPORT)
 #define RCC_PLLSOURCE_HSE              RCC_PLLCFGR_PLLSRC_HSE  /*!< HSE clock selected as PLL entry clock source */
+#endif
 /**
   * @}
   */
@@ -432,7 +516,9 @@ typedef struct
   * @{
   */
 #define RCC_SYSCLKSOURCE_HSISYS        0x00000000U                       /*!< HSI selection as system clock */
+#if defined(RCC_HSE_SUPPORT)
 #define RCC_SYSCLKSOURCE_HSE           RCC_CFGR_SW_0                     /*!< HSE selection as system clock */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define RCC_SYSCLKSOURCE_PLLCLK        RCC_CFGR_SW_1                     /*!< PLL selection as system clock */
 #endif
@@ -448,7 +534,9 @@ typedef struct
   * @{
   */
 #define RCC_SYSCLKSOURCE_STATUS_HSISYS 0x00000000U                       /*!< HSI used as system clock */
+#if defined(RCC_HSE_SUPPORT)
 #define RCC_SYSCLKSOURCE_STATUS_HSE    RCC_CFGR_SWS_0                    /*!< HSE used as system clock */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define RCC_SYSCLKSOURCE_STATUS_PLLCLK RCC_CFGR_SWS_1                    /*!< PLL used as system clock */
 #endif
@@ -497,7 +585,9 @@ typedef struct
 #define RCC_RTCCLKSOURCE_LSE           RCC_BDCR_RTCSEL_0      /*!< LSE oscillator clock used as RTC clock */
 #endif
 #define RCC_RTCCLKSOURCE_LSI           RCC_BDCR_RTCSEL_1      /*!< LSI oscillator clock used as RTC clock */
+#if defined(RCC_HSE_SUPPORT)
 #define RCC_RTCCLKSOURCE_HSE_DIV128    RCC_BDCR_RTCSEL        /*!< HSE oscillator clock divided by 32 used as RTC clock */
+#endif
 /**
   * @}
   */
@@ -526,7 +616,9 @@ typedef struct
 #define RCC_MCOSOURCE_SYSCLK          RCC_CFGR_MCOSEL_0                      /*!< SYSCLK selection as MCO source */
 #define RCC_MCOSOURCE_HSI10M          RCC_CFGR_MCOSEL_1
 #define RCC_MCOSOURCE_HSI             (RCC_CFGR_MCOSEL_0| RCC_CFGR_MCOSEL_1) /*!< HSI selection as MCO source */
+#if defined(RCC_HSE_SUPPORT)
 #define RCC_MCOSOURCE_HSE             RCC_CFGR_MCOSEL_2                      /*!< HSE selection as MCO source */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define RCC_MCOSOURCE_PLLCLK          (RCC_CFGR_MCOSEL_0|RCC_CFGR_MCOSEL_2)  /*!< PLLCLK selection as MCO source */
 #endif
@@ -564,11 +656,15 @@ typedef struct
 #define RCC_IT_LSECSS                  RCC_CIFR_LSECSSF            /*!< LSE Clock Security System Interrupt flag */
 #endif
 #define RCC_IT_HSIRDY                  RCC_CIFR_HSIRDYF            /*!< HSI Ready Interrupt flag */
+#if defined(RCC_HSE_SUPPORT)
 #define RCC_IT_HSERDY                  RCC_CIFR_HSERDYF            /*!< HSE Ready Interrupt flag */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define RCC_IT_PLLRDY                  RCC_CIFR_PLLRDYF            /*!< PLL Ready Interrupt flag */
 #endif
+#if defined(RCC_HSE_SUPPORT)
 #define RCC_IT_CSS                     RCC_CIFR_CSSF               /*!< HSE Clock Security System Interrupt flag */
+#endif
 /**
   * @}
   */
@@ -584,7 +680,9 @@ typedef struct
   */
 /* Flags in the CR register */
 #define RCC_FLAG_HSIRDY                ((CR_REG_INDEX << 5U) | RCC_CR_HSIRDY_Pos) /*!< HSI Ready flag */
+#if defined(RCC_HSE_SUPPORT)
 #define RCC_FLAG_HSERDY                ((CR_REG_INDEX << 5U) | RCC_CR_HSERDY_Pos) /*!< HSE Ready flag */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define RCC_FLAG_PLLRDY                ((CR_REG_INDEX << 5U) | RCC_CR_PLLRDY_Pos) /*!< PLL Ready flag */
 #endif
@@ -782,7 +880,7 @@ typedef struct
                                                  UNUSED(tmpreg); \
                                                } while(0U)
 #endif
-
+#if defined(USART3)
 #define __HAL_RCC_USART3_CLK_ENABLE()          do { \
                                                  __IO uint32_t tmpreg; \
                                                  SET_BIT(RCC->APBENR1, RCC_APBENR1_USART3EN); \
@@ -790,7 +888,7 @@ typedef struct
                                                  tmpreg = READ_BIT(RCC->APBENR1, RCC_APBENR1_USART3EN); \
                                                  UNUSED(tmpreg); \
                                                } while(0U)
-
+#endif
 #define __HAL_RCC_I2C1_CLK_ENABLE()            do { \
                                                  __IO uint32_t tmpreg; \
                                                  SET_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN); \
@@ -798,7 +896,7 @@ typedef struct
                                                  tmpreg = READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN); \
                                                  UNUSED(tmpreg); \
                                                } while(0U)
-
+#if defined(I2C2)
 #define __HAL_RCC_I2C2_CLK_ENABLE()            do { \
                                                  __IO uint32_t tmpreg; \
                                                  SET_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN); \
@@ -806,7 +904,7 @@ typedef struct
                                                  tmpreg = READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN); \
                                                  UNUSED(tmpreg); \
                                                } while(0U)
-
+#endif
 #define __HAL_RCC_DBGMCU_CLK_ENABLE()             do { \
                                                  __IO uint32_t tmpreg; \
                                                  SET_BIT(RCC->APBENR1, RCC_APBENR1_DBGEN); \
@@ -936,7 +1034,7 @@ typedef struct
                                                  UNUSED(tmpreg); \
                                                } while(0U)
 #endif
-
+#if defined(LCD)
 #define __HAL_RCC_LCD_CLK_ENABLE()           do { \
                                                  __IO uint32_t tmpreg; \
                                                  SET_BIT(RCC->APBENR2, RCC_APBENR2_LCDEN); \
@@ -944,7 +1042,7 @@ typedef struct
                                                  tmpreg = READ_BIT(RCC->APBENR2, RCC_APBENR2_LCDEN); \
                                                  UNUSED(tmpreg); \
                                                } while(0U)
-
+#endif
 #define __HAL_RCC_TIM2_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_TIM2EN)
 #if defined(RTC)
 #define __HAL_RCC_RTCAPB_CLK_DISABLE()         CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_RTCAPBEN)
@@ -956,9 +1054,13 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_CLK_DISABLE()         CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_USART2EN)
 #endif
+#if defined(USART3)
 #define __HAL_RCC_USART3_CLK_DISABLE()         CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_USART3EN)
+#endif
 #define __HAL_RCC_I2C1_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN)
+#if defined(I2C2)
 #define __HAL_RCC_I2C2_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN)
+#endif
 #define __HAL_RCC_DBGMCU_CLK_DISABLE()         CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_DBGEN)
 #define __HAL_RCC_PWR_CLK_DISABLE()            CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_PWREN)
 #define __HAL_RCC_OPA_CLK_DISABLE()            CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_OPAEN)
@@ -982,7 +1084,9 @@ typedef struct
 #if defined(COMP2)
 #define __HAL_RCC_COMP2_CLK_DISABLE()          CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_COMP2EN)
 #endif
+#if defined(LCD)
 #define __HAL_RCC_LCD_CLK_DISABLE()            CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_LCDEN)
+#endif
 /**
   * @}
   */
@@ -1055,9 +1159,13 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_IS_CLK_ENABLED()      (READ_BIT(RCC->APBENR1, RCC_APBENR1_USART2EN) != 0U)
 #endif
+#if defined(USART3)
 #define __HAL_RCC_USART3_IS_CLK_ENABLED()      (READ_BIT(RCC->APBENR1, RCC_APBENR1_USART3EN) != 0U)
+#endif
 #define __HAL_RCC_I2C1_IS_CLK_ENABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN)    != 0U)
+#if defined(I2C2)
 #define __HAL_RCC_I2C2_IS_CLK_ENABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN)    != 0U)
+#endif
 #define __HAL_RCC_DBGMCU_IS_CLK_ENABLED()      (READ_BIT(RCC->APBENR1, RCC_APBENR1_DBGEN)    != 0U)
 #define __HAL_RCC_PWR_IS_CLK_ENABLED()         (READ_BIT(RCC->APBENR1, RCC_APBENR1_PWREN)    != 0U)
 #define __HAL_RCC_OPA_IS_CLK_ENABLED()         (READ_BIT(RCC->APBENR1, RCC_APBENR1_OPAEN)    != 0U)
@@ -1076,9 +1184,13 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_IS_CLK_DISABLED()     (READ_BIT(RCC->APBENR1, RCC_APBENR1_USART2EN) == 0U)
 #endif
+#if defined(USART3)
 #define __HAL_RCC_USART3_IS_CLK_DISABLED()     (READ_BIT(RCC->APBENR1, RCC_APBENR1_USART3EN) == 0U)
+#endif
 #define __HAL_RCC_I2C1_IS_CLK_DISABLED()       (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C1EN)    == 0U)
+#if defined(I2C2)
 #define __HAL_RCC_I2C2_IS_CLK_DISABLED()       (READ_BIT(RCC->APBENR1, RCC_APBENR1_I2C2EN)    == 0U)
+#endif
 #define __HAL_RCC_DBGMCU_IS_CLK_DISABLED()     (READ_BIT(RCC->APBENR1, RCC_APBENR1_DBGEN)    == 0U)
 #define __HAL_RCC_PWR_IS_CLK_DISABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_PWREN)    == 0U)
 #define __HAL_RCC_OPA_IS_CLK_DISABLED()        (READ_BIT(RCC->APBENR1, RCC_APBENR1_OPAEN)    == 0U)
@@ -1115,8 +1227,9 @@ typedef struct
 #if defined(COMP2)
 #define __HAL_RCC_COMP2_IS_CLK_ENABLED()       (READ_BIT(RCC->APBENR2, RCC_APBENR2_COMP2EN)  != 0U)
 #endif
+#if defined(LCD)
 #define __HAL_RCC_LCD_IS_CLK_ENABLED()         (READ_BIT(RCC->APBENR2, RCC_APBENR2_LCDEN)    != 0U)
-
+#endif
 #define __HAL_RCC_SYSCFG_IS_CLK_DISABLED()     (READ_BIT(RCC->APBENR2, RCC_APBENR2_SYSCFGEN) == 0U)
 #define __HAL_RCC_TIM1_IS_CLK_DISABLED()       (READ_BIT(RCC->APBENR2, RCC_APBENR2_TIM1EN)   == 0U)
 #define __HAL_RCC_SPI1_IS_CLK_DISABLED()       (READ_BIT(RCC->APBENR2, RCC_APBENR2_SPI1EN)   == 0U)
@@ -1135,8 +1248,9 @@ typedef struct
 #if defined(COMP2)
 #define __HAL_RCC_COMP2_IS_CLK_DISABLED()      (READ_BIT(RCC->APBENR2, RCC_APBENR2_COMP2EN)  == 0U)
 #endif
+#if defined(LCD)
 #define __HAL_RCC_LCD_IS_CLK_DISABLED()        (READ_BIT(RCC->APBENR2, RCC_APBENR2_LCDEN)    == 0U)
-
+#endif
 /**
   * @}
   */
@@ -1197,9 +1311,13 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_FORCE_RESET()         SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_USART2RST)
 #endif
+#if defined(USART3)
 #define __HAL_RCC_USART3_FORCE_RESET()         SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_USART3RST)
+#endif
 #define __HAL_RCC_I2C1_FORCE_RESET()            SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C1RST)
+#if defined(I2C2)
 #define __HAL_RCC_I2C2_FORCE_RESET()            SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C2RST)
+#endif
 #define __HAL_RCC_DBGMCU_FORCE_RESET()         SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_DBGRST)
 #define __HAL_RCC_PWR_FORCE_RESET()            SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_PWRRST)
 #define __HAL_RCC_OPA_FORCE_RESET()            SET_BIT(RCC->APBRSTR1, RCC_APBRSTR1_OPARST)
@@ -1215,9 +1333,13 @@ typedef struct
 #if defined(USART2)
 #define __HAL_RCC_USART2_RELEASE_RESET()       CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_USART2RST)
 #endif
+#if defined(USART3)
 #define __HAL_RCC_USART3_RELEASE_RESET()       CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_USART3RST)
+#endif
 #define __HAL_RCC_I2C1_RELEASE_RESET()         CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C1RST)
+#if defined(I2C2)
 #define __HAL_RCC_I2C2_RELEASE_RESET()         CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_I2C2RST)
+#endif
 #define __HAL_RCC_DBGMCU_RELEASE_RESET()       CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_DBGRST)
 #define __HAL_RCC_PWR_RELEASE_RESET()          CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_PWRRST)
 #define __HAL_RCC_OPA_RELEASE_RESET()          CLEAR_BIT(RCC->APBRSTR1, RCC_APBRSTR1_OPARST)
@@ -1250,8 +1372,9 @@ typedef struct
 #if defined(COMP2)
 #define __HAL_RCC_COMP2_FORCE_RESET()          SET_BIT(RCC->APBRSTR2, RCC_APBRSTR2_COMP2RST)
 #endif
+#if defined(LCD)
 #define __HAL_RCC_LCD_FORCE_RESET()            SET_BIT(RCC->APBRSTR2, RCC_APBRSTR2_LCDRST)
-
+#endif
 #define __HAL_RCC_APB2_RELEASE_RESET()         WRITE_REG(RCC->APBRSTR2, 0x00U)
 #define __HAL_RCC_SYSCFG_RELEASE_RESET()       CLEAR_BIT(RCC->APBRSTR2, RCC_APBRSTR2_SYSCFGRST)
 #define __HAL_RCC_TIM1_RELEASE_RESET()         CLEAR_BIT(RCC->APBRSTR2, RCC_APBRSTR2_TIM1RST)
@@ -1271,7 +1394,9 @@ typedef struct
 #if defined(COMP2)
 #define __HAL_RCC_COMP2_RELEASE_RESET()        CLEAR_BIT(RCC->APBRSTR2, RCC_APBRSTR2_COMP2RST)
 #endif
+#if defined(LCD)
 #define __HAL_RCC_LCD_RELEASE_RESET()          CLEAR_BIT(RCC->APBRSTR2, RCC_APBRSTR2_LCDRST)
+#endif
 /**
   * @}
   */
@@ -1379,6 +1504,7 @@ typedef struct
 
 #define __HAL_RCC_LSI_DISABLE()        CLEAR_BIT(RCC->CSR, RCC_CSR_LSION)
 
+#if defined(RCC_HSE_SUPPORT)
 /**
   * @brief  Macro to configure the External High Speed oscillator (HSE).
   * @note   Transition HSE Bypass to HSE On and HSE On to HSE Bypass are not
@@ -1432,6 +1558,7 @@ typedef struct
                                                   If HSEBYP is set, it is output after 4096 clock cycles.
   */
 #define __HAL_RCC_HSE_STARTUP_DELAY(__TIME__)   MODIFY_REG(RCC->ECSCR, RCC_ECSCR_HSE_STARTUP ,(__TIME__))
+#endif
 
 #if defined(RCC_LSE_SUPPORT)
 /**
@@ -1787,7 +1914,9 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uin
 
 /* Peripheral Control functions  ************************************************/
 void              HAL_RCC_MCOConfig(uint32_t RCC_MCOx, uint32_t RCC_MCOSource, uint32_t RCC_MCODiv);
+#if defined(RCC_HSE_SUPPORT)
 void              HAL_RCC_EnableCSS(void);
+#endif
 #if defined(RCC_LSE_SUPPORT)
 void              HAL_RCC_EnableLSECSS(void);
 void              HAL_RCC_DisableLSECSS(void);
@@ -1800,9 +1929,10 @@ void              HAL_RCC_GetOscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct);
 void              HAL_RCC_GetClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t *pFLatency);
 /* LSE & HSE CSS NMI IRQ handler */
 void              HAL_RCC_NMI_IRQHandler(void);
+#if defined(RCC_HSE_SUPPORT)
 /* User Callbacks in non blocking mode (IT mode) */
 void              HAL_RCC_CSSCallback(void);
-
+#endif
 /**
   * @}
   */

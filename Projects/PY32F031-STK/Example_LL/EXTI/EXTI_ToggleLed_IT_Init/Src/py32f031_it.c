@@ -90,15 +90,15 @@ void SysTick_Handler(void)
 /* please refer to the startup file.                                          */
 /******************************************************************************/
 /**
-  * @brief This function handles EXTI4_15 interrupt.
+  * @brief This function handles EXTI0_1 interrupt.
   */
 void EXTI0_1_IRQHandler(void)
 {
   /* Handle EXTI interrupt request */
-  if(LL_EXTI_IsActiveFlag(LL_EXTI_LINE_0))
+  if(LL_EXTI_IsActiveFlag(LL_EXTI_LINE_1))
   {
     BSP_LED_Toggle(LED_GREEN);
-    LL_EXTI_ClearFlag(LL_EXTI_LINE_0);
+    LL_EXTI_ClearFlag(LL_EXTI_LINE_1);
   }
 }
 /************************ (C) COPYRIGHT Puya *****END OF FILE******************/

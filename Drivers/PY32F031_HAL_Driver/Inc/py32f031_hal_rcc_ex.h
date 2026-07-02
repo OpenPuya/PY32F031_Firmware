@@ -347,8 +347,12 @@ uint32_t HAL_RCCEx_GetLSCSource(void);
 /** @defgroup RCCEx_Private_Macros RCCEx Private Macros
   * @{
   */
+#if defined(RCC_LSE_SUPPORT)
 #define IS_RCC_LSCSOURCE(__SOURCE__) (((__SOURCE__) == RCC_LSCSOURCE_LSI) || \
                                        ((__SOURCE__) == RCC_LSCSOURCE_LSE))
+#else
+#define IS_RCC_LSCSOURCE(__SOURCE__) (((__SOURCE__) == RCC_LSCSOURCE_LSI))
+#endif
 
 #if defined(RCC_CCIPR_PVDSEL)
 #define IS_RCC_PVDCLKSOURCE(__SOURCE__)  \

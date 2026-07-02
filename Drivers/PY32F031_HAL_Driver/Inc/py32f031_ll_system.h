@@ -232,11 +232,17 @@ extern "C" {
 #define LL_SYSCFG_DMA_MAP_TIM16_UP       (                          SYSCFG_CFGR3_DMA1_MAP_4 | SYSCFG_CFGR3_DMA1_MAP_3                                                     | SYSCFG_CFGR3_DMA1_MAP_0)
 #define LL_SYSCFG_DMA_MAP_TIM17_CH1      (                          SYSCFG_CFGR3_DMA1_MAP_4 | SYSCFG_CFGR3_DMA1_MAP_3                           | SYSCFG_CFGR3_DMA1_MAP_1                          )
 #define LL_SYSCFG_DMA_MAP_TIM17_UP       (                          SYSCFG_CFGR3_DMA1_MAP_4 | SYSCFG_CFGR3_DMA1_MAP_3                           | SYSCFG_CFGR3_DMA1_MAP_1 | SYSCFG_CFGR3_DMA1_MAP_0)
+#if defined(USART3)
 #define LL_SYSCFG_DMA_MAP_USART3_TX      (                          SYSCFG_CFGR3_DMA1_MAP_4 | SYSCFG_CFGR3_DMA1_MAP_3 | SYSCFG_CFGR3_DMA1_MAP_2                                                    )
 #define LL_SYSCFG_DMA_MAP_USART3_RX      (                          SYSCFG_CFGR3_DMA1_MAP_4 | SYSCFG_CFGR3_DMA1_MAP_3 | SYSCFG_CFGR3_DMA1_MAP_2                           | SYSCFG_CFGR3_DMA1_MAP_0)
+#endif
+#if defined(I2C2)
 #define LL_SYSCFG_DMA_MAP_I2C2_TX        (                          SYSCFG_CFGR3_DMA1_MAP_4 | SYSCFG_CFGR3_DMA1_MAP_3 | SYSCFG_CFGR3_DMA1_MAP_2 | SYSCFG_CFGR3_DMA1_MAP_1                          )
 #define LL_SYSCFG_DMA_MAP_I2C2_RX        (                          SYSCFG_CFGR3_DMA1_MAP_4 | SYSCFG_CFGR3_DMA1_MAP_3 | SYSCFG_CFGR3_DMA1_MAP_2 | SYSCFG_CFGR3_DMA1_MAP_1 | SYSCFG_CFGR3_DMA1_MAP_0)
+#endif
+#if defined(LCD)
 #define LL_SYSCFG_DMA_MAP_LCD            (SYSCFG_CFGR3_DMA1_MAP_5                                                                                                                                  )
+#endif
 #endif /* DMA Or DMA1 */
 /**
   * @}

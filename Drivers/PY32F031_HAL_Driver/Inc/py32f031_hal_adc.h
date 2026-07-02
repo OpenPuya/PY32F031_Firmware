@@ -558,8 +558,12 @@ typedef enum
 #define ADC_CHANNEL_VREFINT     ADC_CHANNEL_11
 
 #define ADC_CHANNEL_1_3VCCA     ADC_CHANNEL_12
+#if defined(OPA_CR_OPA1EN)
 #define ADC_CHANNEL_OPA1_VIN    ADC_CHANNEL_13
+#endif
+#if defined(OPA_CR_OPA2EN)
 #define ADC_CHANNEL_OPA2_VIN    ADC_CHANNEL_14
+#endif
 
 /**
   * @}
@@ -1030,6 +1034,7 @@ typedef enum
                                  ((REGTRIG) == ADC_EXTERNALTRIGCONV_EXT_IT11)   || \
                                  ((REGTRIG) == ADC_SOFTWARE_START))
 
+#if defined(OPA_CR_OPA1EN) && defined(OPA_CR_OPA2EN)
 #define IS_ADC_CHANNEL(CHANNEL) (((CHANNEL) == ADC_CHANNEL_0)           || \
                                  ((CHANNEL) == ADC_CHANNEL_1)           || \
                                  ((CHANNEL) == ADC_CHANNEL_2)           || \
@@ -1046,8 +1051,54 @@ typedef enum
                                  ((CHANNEL) == ADC_CHANNEL_1_3VCCA)   ||\
                                  ((CHANNEL) == ADC_CHANNEL_OPA1_VIN)   ||\
                                  ((CHANNEL) == ADC_CHANNEL_OPA2_VIN))
-
-
+#elif defined(OPA_CR_OPA1EN)
+#define IS_ADC_CHANNEL(CHANNEL) (((CHANNEL) == ADC_CHANNEL_0)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_1)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_2)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_3)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_4)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_5)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_6)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_7)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_8)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_9)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_10)          || \
+                                 ((CHANNEL) == ADC_CHANNEL_TEMPSENSOR)  || \
+                                 ((CHANNEL) == ADC_CHANNEL_VREFINT)  || \
+                                 ((CHANNEL) == ADC_CHANNEL_1_3VCCA)   ||\
+                                 ((CHANNEL) == ADC_CHANNEL_OPA1_VIN))
+#elif defined(OPA_CR_OPA2EN)
+#define IS_ADC_CHANNEL(CHANNEL) (((CHANNEL) == ADC_CHANNEL_0)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_1)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_2)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_3)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_4)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_5)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_6)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_7)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_8)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_9)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_10)          || \
+                                 ((CHANNEL) == ADC_CHANNEL_TEMPSENSOR)  || \
+                                 ((CHANNEL) == ADC_CHANNEL_VREFINT)  || \
+                                 ((CHANNEL) == ADC_CHANNEL_1_3VCCA)   ||\
+                                 ((CHANNEL) == ADC_CHANNEL_OPA2_VIN))
+#else
+#define IS_ADC_CHANNEL(CHANNEL) (((CHANNEL) == ADC_CHANNEL_0)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_1)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_2)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_3)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_4)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_5)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_6)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_7)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_8)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_9)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_10)          || \
+                                 ((CHANNEL) == ADC_CHANNEL_TEMPSENSOR)  || \
+                                 ((CHANNEL) == ADC_CHANNEL_VREFINT)  || \
+                                 ((CHANNEL) == ADC_CHANNEL_1_3VCCA)                                                              
+#endif
                                  
 #define IS_ADC_VREFBUF(VREFBUF) (((VREFBUF) == ADC_VREFBUF_VCCA)    || \
                                  ((VREFBUF) == ADC_VREFBUF_1P024V)    || \

@@ -64,17 +64,17 @@ static void APP_ConfigureExti(void)
 {
   /* Configuration pins */
   GPIO_InitTypeDef  GPIO_InitStruct = {0};
-  USER_BUTTON_GPIO_CLK_ENABLE();                 /* Enable the GPIO clock corresponding to the button */
+  __HAL_RCC_GPIOB_CLK_ENABLE();                  /* Enable the GPIO clock corresponding to the button */
   GPIO_InitStruct.Mode  = GPIO_MODE_IT_FALLING;  /* GPIO mode is a falling edge interrupt */
   GPIO_InitStruct.Pull  = GPIO_PULLUP;           /* pull up */
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;  /* The speed is high */
-  GPIO_InitStruct.Pin = USER_BUTTON_PIN;
-  HAL_GPIO_Init(USER_BUTTON_GPIO_PORT, &GPIO_InitStruct);
+  GPIO_InitStruct.Pin = GPIO_PIN_1;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* Configure interrupt priority */
-  HAL_NVIC_SetPriority(USER_BUTTON_EXTI_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(EXTI0_1_IRQn, 0, 0);
   /* Enable EXTI interrupt */
-  HAL_NVIC_EnableIRQ(USER_BUTTON_EXTI_IRQn);
+  HAL_NVIC_EnableIRQ(EXTI0_1_IRQn);
 }
 
 /**

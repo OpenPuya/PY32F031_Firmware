@@ -52,13 +52,15 @@
   * @{
   */
 #if defined(RCC_PLL_SUPPORT)
+#define UTILS_PLL_OUTPUT_MAX         72000000U     /*!< Frequency max for PLL output, in Hz  */  
+#if defined(RCC_HSE_SUPPORT)
 /* Defines used for HSE range */
 #define UTILS_HSE_FREQUENCY_MIN      4000000U      /*!< Frequency min for HSE frequency, in Hz   */
 #define UTILS_HSE_FREQUENCY_MAX      32000000U     /*!< Frequency max for HSE frequency, in Hz   */
-
+#endif
 /* Defines used for PLL input range */
-#define LL_RCC_PLLINPUT_FREQ_MIN     11000000U     /*!< Frequency min for PLL input frequency, in Hz   */
-#define LL_RCC_PLLINPUT_FREQ_MAX     26000000U     /*!< Frequency max for PLL input frequency, in Hz   */
+#define LL_RCC_PLLINPUT_FREQ_MIN     16000000U     /*!< Frequency min for PLL input frequency, in Hz   */
+#define LL_RCC_PLLINPUT_FREQ_MAX     24000000U     /*!< Frequency max for PLL input frequency, in Hz   */
 #endif
 
 /* Defines used for FLASH latency according to HCLK Frequency */
@@ -93,13 +95,16 @@
 #define IS_LL_UTILS_PLLMUL_VALUE(__VALUE__) (((__VALUE__) == LL_RCC_PLL_MUL_2) \
                                           || ((__VALUE__) == LL_RCC_PLL_MUL_3))
 
+#if defined(RCC_HSE_SUPPORT)
 #define IS_LL_UTILS_HSE_BYPASS(__STATE__) (((__STATE__) == LL_UTILS_HSEBYPASS_ON) \
                                         || ((__STATE__) == LL_UTILS_HSEBYPASS_OFF))
+#endif
 
 #if defined(RCC_PLL_SUPPORT)
 #define IS_LL_UTILS_HSE_FREQUENCY(__FREQUENCY__) (((__FREQUENCY__) >= UTILS_HSE_FREQUENCY_MIN) && ((__FREQUENCY__) <= UTILS_HSE_FREQUENCY_MAX))
 
 #define IS_LL_UTILS_PLL_INPUT_FREQUENCY(__FREQUENCY__) (((__FREQUENCY__) >= LL_RCC_PLLINPUT_FREQ_MIN) && ((__FREQUENCY__) <= LL_RCC_PLLINPUT_FREQ_MAX))
+#define IS_LL_UTILS_PLL_FREQUENCY(__VALUE__) ((__VALUE__) <= UTILS_PLL_OUTPUT_MAX)
 #endif
 
 /**
@@ -234,6 +239,9 @@ ErrorStatus LL_PLL_ConfigSystemClock_HSI(LL_UTILS_PLLInitTypeDef *UTILS_PLLInitS
   ErrorStatus status;
   uint32_t pllfreq;
 
+  uint32_t temp_pllMulIndex;
+  const uint32_t pllMinFreq[]= {16000000,22000000};
+  
   /* Check the parameters */
   assert_param(IS_LL_UTILS_PLLMUL_VALUE(UTILS_PLLInitStruct->PLLMul));
 
@@ -247,9 +255,17 @@ ErrorStatus LL_PLL_ConfigSystemClock_HSI(LL_UTILS_PLLInitTypeDef *UTILS_PLLInitS
       return ERROR;
     }
 
-    /* Calculate the new PLL output frequency */
+    /* PLL input source frequency must be greater than or equal to PLLSOURCE_MIN_FREQ */
+    temp_pllMulIndex = UTILS_PLLInitStruct->PLLMul>>RCC_PLLCFGR_PLLMUL_Pos;
+    if(LL_RCC_HSI_GetFreq() < pllMinFreq[temp_pllMulIndex])
+    {
+      return ERROR;
+    }
+	
     pllfreq = __LL_RCC_CALC_PLLCLK_FREQ(LL_RCC_HSI_GetFreq(), UTILS_PLLInitStruct->PLLMul);
 
+    assert_param(IS_LL_UTILS_PLL_FREQUENCY(pllfreq));
+        
     /* Enable HSI if not enabled */
     if (LL_RCC_HSI_IsReady() != 1U)
     {
@@ -275,6 +291,7 @@ ErrorStatus LL_PLL_ConfigSystemClock_HSI(LL_UTILS_PLLInitTypeDef *UTILS_PLLInitS
   return status;
 }
 
+#if defined(RCC_HSE_SUPPORT)
 /**
   * @brief  This function configures system clock with HSE as clock source of the PLL
   * @note   The application need to ensure that PLL is disabled.
@@ -297,12 +314,20 @@ ErrorStatus LL_PLL_ConfigSystemClock_HSE(uint32_t HSEFrequency, uint32_t HSEBypa
   ErrorStatus status;
   uint32_t pllfreq;
   const uint32_t Freq16MHz = 16000000U;
+  
+  uint32_t temp_pllMulIndex;
+  const uint32_t pllMinFreq[]= {16000000,22000000};
+  const uint32_t pllMaxFreq[]= {24000000,24000000};
 
   /* Check the parameters */
   assert_param(IS_LL_UTILS_HSE_FREQUENCY(HSEFrequency));
   assert_param(IS_LL_UTILS_HSE_BYPASS(HSEBypass));
   assert_param(IS_LL_UTILS_PLLMUL_VALUE(UTILS_PLLInitStruct->PLLMul));
 
+  pllfreq = __LL_RCC_CALC_PLLCLK_FREQ(HSEFrequency, UTILS_PLLInitStruct->PLLMul);
+
+  assert_param(IS_LL_UTILS_PLL_FREQUENCY(pllfreq));
+  
   /* Check if one of the PLL is enabled */
   if (UTILS_PLL_IsBusy() == SUCCESS)
   {
@@ -312,10 +337,14 @@ ErrorStatus LL_PLL_ConfigSystemClock_HSE(uint32_t HSEFrequency, uint32_t HSEBypa
       /* the new PLL input frequency is error */
       return ERROR;
     }
-
-    /* Calculate the new PLL output frequency */
-    pllfreq = __LL_RCC_CALC_PLLCLK_FREQ(HSEFrequency, UTILS_PLLInitStruct->PLLMul);
-
+    
+    /* PLL input source frequency must be greater than or equal to PLLSOURCE_MIN_FREQ */
+    temp_pllMulIndex = UTILS_PLLInitStruct->PLLMul>>RCC_PLLCFGR_PLLMUL_Pos;
+    if((HSEFrequency < pllMinFreq[temp_pllMulIndex]) || (HSEFrequency > pllMaxFreq[temp_pllMulIndex])) 
+    {
+      return ERROR;
+    }
+    
     /* Enable HSE if not enabled */
     if (LL_RCC_HSE_IsReady() != 1U)
     {
@@ -361,6 +390,7 @@ ErrorStatus LL_PLL_ConfigSystemClock_HSE(uint32_t HSEFrequency, uint32_t HSEBypa
 
   return status;
 }
+#endif
 #endif
 
 /**

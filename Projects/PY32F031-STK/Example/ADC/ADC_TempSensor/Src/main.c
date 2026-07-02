@@ -34,10 +34,16 @@
 /* Private define ------------------------------------------------------------*/
 #define Vcc_Power     3.30                                            /* VCC power supply voltage, modify according to actual situation  */
 #define TScal1        (float)((HAL_ADC_TSCAL1) * 3.3 / Vcc_Power)     /* Voltage corresponding to calibration value at 30 ℃  */
-#define TScal2        (float)((HAL_ADC_TSCAL2) * 3.3 / Vcc_Power)     /* Voltage corresponding to calibration value at 85 ℃  */
+#define TScal2        (float)((HAL_ADC_TSCAL2) * 3.3 / Vcc_Power)     /* Voltage corresponding to calibration value at 85 or 105 ℃ */
 #define TStem1        30                                              /* 30 ℃ */
-#define TStem2        85                                              /* 85 ℃ */
-#define Temp_k        ((float)(TStem2-TStem1)/(float)(TScal2-TScal1)) /* Temperature calculation */
+#define TStem2_85     85                                              /* 85 ℃ */
+#define TStem2_105    105                                             /* 105 ℃ */
+
+#define HighTemp_85
+/* #define HighTemp_105 */
+
+#define Temp_k_85     ((float)(TStem2_85-TStem1)/(float)(TScal2-TScal1))  /* Temperature calculation */
+#define Temp_k_105    ((float)(TStem2_105-TStem1)/(float)(TScal2-TScal1)) /* Temperature calculation */
   
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef             AdcHandle;
@@ -86,7 +92,13 @@ int main(void)
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
   aADCxConvertedData = HAL_ADC_GetValue(hadc);
-  aTEMPERATURE =(int16_t)((85-30)*(aADCxConvertedData-TScal1)/(TScal2-TScal1) + TStem1);
+/* Please Check the High Temperature Value accord the datasheet */
+#if defined(HighTemp_85)                              
+      aTEMPERATURE =(int16_t)(Temp_k_85 * aADCxConvertedData - Temp_k_85 * TScal1 + TStem1);
+#else
+      aTEMPERATURE =(int16_t)(Temp_k_105 * aADCxConvertedData - Temp_k_105 * TScal1 + TStem1);
+#endif
+
   printf("Temperature = %d \r\n", (int)aTEMPERATURE);
 }
 

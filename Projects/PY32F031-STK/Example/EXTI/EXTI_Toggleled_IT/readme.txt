@@ -3,13 +3,13 @@
                              Sample Description
 ================================================================================
 功能描述：
-此样例演示了GPIO外部中断功能，按键（PB0）引脚上的每一个下降沿都会产生中断，中断
-函数中LED灯会翻转一次。
+此样例演示了GPIO外部中断功能，PB1引脚上的每一个下降沿都会产生中断，中断函数中
+LED灯会翻转一次。
 
 Function descriptions:
-This example demonstrates the GPIO external interrupt function, where each
-falling edge on the key (PB0) pin generates an interrupt, and the LED light
-in the interrupt function flips once.
+This sample demonstrates the functionality of GPIO external interrupts. 
+Whenever a falling edge is detected on pin PB1, an interrupt is triggered, 
+and the interrupt handler toggles the state of the LED.
 ================================================================================
 测试环境：
 测试用板：PY32F031_STK
@@ -25,11 +25,11 @@ GCC Version: GNU Arm Embedded Toolchain 10.3-2021.10
 ================================================================================
 使用步骤：
 1. 编译下载程序到MCU，并运行；
-2. 每按一次用户按键，观察到LED翻转一次；
+2. PB1引脚上每产生一次下降沿，LED翻转就一次；
 
 Example execution steps:
-1.Compile and download the program to MCU and run it;
-2.Observe the LED flipping once every time the user presses the button;
+1.Compile and download the program to the MCU and run it.
+2.Toggle the LED once for every falling edge generated on the PB1 pin;
 ================================================================================
 注意事项：
 

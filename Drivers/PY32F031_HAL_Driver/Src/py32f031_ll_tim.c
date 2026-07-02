@@ -73,7 +73,9 @@
                                      || ((__VALUE__) == LL_TIM_OCMODE_FORCED_INACTIVE) \
                                      || ((__VALUE__) == LL_TIM_OCMODE_FORCED_ACTIVE) \
                                      || ((__VALUE__) == LL_TIM_OCMODE_PWM1) \
-                                     || ((__VALUE__) == LL_TIM_OCMODE_PWM2))
+                                     || ((__VALUE__) == LL_TIM_OCMODE_PWM2) \
+                                     || ((__VALUE__) == LL_TIM_OCMODE_RETRIGERRABLE_OPM1) \
+                                     || ((__VALUE__) == LL_TIM_OCMODE_RETRIGERRABLE_OPM2))
 
 #define IS_LL_TIM_OCSTATE(__VALUE__) (((__VALUE__) == LL_TIM_OCSTATE_DISABLE) \
                                       || ((__VALUE__) == LL_TIM_OCSTATE_ENABLE))

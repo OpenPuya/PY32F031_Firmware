@@ -157,6 +157,7 @@ ErrorStatus LL_USART_DeInit(USART_TypeDef *USARTx)
     /* Release reset of USART clock */
     LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART2);
   }
+#if defined(USART3)
   else if (USARTx == USART3)
   {
     /* Force reset of USART clock */
@@ -165,6 +166,7 @@ ErrorStatus LL_USART_DeInit(USART_TypeDef *USARTx)
     /* Release reset of USART clock */
     LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART3);
   }
+#endif
   else
   {
     status = ERROR;

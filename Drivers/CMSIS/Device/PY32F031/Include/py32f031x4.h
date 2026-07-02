@@ -3402,6 +3402,7 @@ typedef struct
 /*
 * @brief Specific device feature definitions
 */
+#define RCC_HSE_SUPPORT
 #define RCC_LSE_SUPPORT
 #define RCC_PLL_SUPPORT
 

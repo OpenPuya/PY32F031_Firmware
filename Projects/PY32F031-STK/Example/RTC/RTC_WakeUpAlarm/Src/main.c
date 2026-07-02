@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-RTC_HandleTypeDef RTCinit;
+RTC_HandleTypeDef RtcHandle;
 RTC_TimeTypeDef RTCtime;
 RTC_AlarmTypeDef RTC_AlarmStruct;
 
@@ -77,12 +77,12 @@ int main(void)
   }
   
   /* Get current RTC time in binary format */
-  HAL_RTC_GetTime(&RTCinit,&RTCtime,RTC_FORMAT_BIN);
+  HAL_RTC_GetTime(&RtcHandle,&RTCtime,RTC_FORMAT_BIN);
   
   /* Configure the time of the first alarm in binary format */
   RTC_AlarmStruct.AlarmTime = RTCtime;
   RTC_AlarmStruct.AlarmTime.Seconds += 1;
-  HAL_RTC_SetAlarm_IT(&RTCinit, &RTC_AlarmStruct, RTC_FORMAT_BIN);
+  HAL_RTC_SetAlarm_IT(&RtcHandle, &RTC_AlarmStruct, RTC_FORMAT_BIN);
   
    /* Turn off LED */
   BSP_LED_Off(LED_GREEN);
@@ -99,7 +99,7 @@ int main(void)
     HAL_ResumeTick();
 
     /* Wait for synchronization */
-    HAL_RTC_WaitForSynchro(&RTCinit);
+    HAL_RTC_WaitForSynchro(&RtcHandle);
     
     /* Set RTC alarm interrupt */
     APP_RtcSetAlarm_IT();
@@ -129,26 +129,26 @@ static void APP_RtcInit(void)
   HAL_RCCEx_PeriphCLKConfig(&RTCLCKconfig);
   
   /* RTC initialization */
-  RTCinit.Instance = RTC;                               /* Select RTC */
-  RTCinit.Init.AsynchPrediv = RTC_AUTO_1_SECOND;        /* Automatic calculation of RTC's 1-second time base */
-  RTCinit.Init.OutPut = RTC_OUTPUTSOURCE_NONE;          /* No output on the TAMPER pin */
+  RtcHandle.Instance = RTC;                               /* Select RTC */
+  RtcHandle.Init.AsynchPrediv = RTC_AUTO_1_SECOND;        /* Automatic calculation of RTC's 1-second time base */
+  RtcHandle.Init.OutPut = RTC_OUTPUTSOURCE_NONE;          /* No output on the TAMPER pin */
   /*2022-1-1-00:00:00*/
-  RTCinit.DateToUpdate.Year = 22;                       /* Year 22 */
-  RTCinit.DateToUpdate.Month = RTC_MONTH_JANUARY;       /* January */
-  RTCinit.DateToUpdate.Date = 1;                        /* 1st day */
-  RTCinit.DateToUpdate.WeekDay = RTC_WEEKDAY_SATURDAY;  /* Saturday */
+  RtcHandle.DateToUpdate.Year = 22;                       /* Year 22 */
+  RtcHandle.DateToUpdate.Month = RTC_MONTH_JANUARY;       /* January */
+  RtcHandle.DateToUpdate.Date = 1;                        /* 1st day */
+  RtcHandle.DateToUpdate.WeekDay = RTC_WEEKDAY_SATURDAY;  /* Saturday */
   Timeinit.Hours = 0x00;                                /* 0 hours */
   Timeinit.Minutes = 0x00;                              /* 0 minutes */
   Timeinit.Seconds = 0x00;                              /* 0 seconds */
   
   /* RTC deinitialization */
-  HAL_RTC_DeInit(&RTCinit);
+  HAL_RTC_DeInit(&RtcHandle);
   
   /* RTC initialization */
-  HAL_RTC_Init(&RTCinit);
+  HAL_RTC_Init(&RtcHandle);
   
   /* Set RTC current time in binary format */
-  HAL_RTC_SetTime(&RTCinit, &Timeinit, RTC_FORMAT_BIN);
+  HAL_RTC_SetTime(&RtcHandle, &Timeinit, RTC_FORMAT_BCD);
 }
 
 /**
@@ -158,11 +158,11 @@ static void APP_RtcInit(void)
 static void APP_RtcSetAlarm_IT(void)
 {
   /* Get current alarm time in binary format */
-  HAL_RTC_GetAlarm(&RTCinit, &RTC_AlarmStruct, RTC_FORMAT_BIN);
+  HAL_RTC_GetAlarm(&RtcHandle, &RTC_AlarmStruct, RTC_FORMAT_BIN);
   
   /* Update alarm time in binary format */
   RTC_AlarmStruct.AlarmTime.Seconds += 1;
-  HAL_RTC_SetAlarm_IT(&RTCinit, &RTC_AlarmStruct, RTC_FORMAT_BIN);
+  HAL_RTC_SetAlarm_IT(&RtcHandle, &RTC_AlarmStruct, RTC_FORMAT_BIN);
 }
 
 /**
@@ -187,15 +187,21 @@ static void APP_SystemClockConfig(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /* Oscillator configuration */
+#if defined(RCC_LSE_SUPPORT)
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE; /* Select oscillator HSE, HSI, LSI, LSE */
+#else
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI; /* Select oscillator HSE, HSI, LSI */
+#endif
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;                          /* Enable HSI */
   RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;                          /* HSI 1 frequency division */
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_8MHz;  /* Configure HSI clock 8MHz */
   RCC_OscInitStruct.HSEState = RCC_HSE_OFF;                         /* Close HSE */
   /*RCC_OscInitStruct.HSEFreq = RCC_HSE_16_32MHz;*/
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;                          /* Enable LSI */
+#if defined(RCC_LSE_SUPPORT)
   RCC_OscInitStruct.LSEState = RCC_LSE_OFF;                         /* Close LSE */
   /*RCC_OscInitStruct.LSEDriver = RCC_LSEDRIVE_MEDIUM;*/
+#endif
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_OFF;                     /* Close PLL */
   /*RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;*/
   /*RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;*/

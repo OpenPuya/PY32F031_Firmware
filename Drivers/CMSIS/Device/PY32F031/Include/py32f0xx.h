@@ -53,6 +53,7 @@ extern "C" {
 #if !defined (PY32F001x4) && \
     !defined (PY32F002Ax5) && !defined (PY32F002Bx5) && \
     !defined (PY32F003x4) && !defined (PY32F003x6) && !defined (PY32F003x8) && \
+    !defined (PY32F021x8) && \
     !defined (PY32F030x3) && !defined (PY32F030x4) && !defined (PY32F030x6) && !defined (PY32F030x7) && !defined (PY32F030x8) && !defined (PY32F030xx) && \
     !defined (PY32F031x4) && !defined (PY32F031x6) && !defined (PY32F031x7) && !defined (PY32F031x8) && \
     !defined (PY32F040x6) && !defined (PY32F040x8) && !defined (PY32F040x9) && !defined (PY32F040xB) && \
@@ -64,6 +65,7 @@ extern "C" {
 /* #define PY32F003x4  */  /*!< PY32F003x4  Devices (PY32F003x4  microcontrollers where the Flash memory is 16  Kbytes) */
 /* #define PY32F003x6  */  /*!< PY32F003x6  Devices (PY32F003x6  microcontrollers where the Flash memory is 32  Kbytes) */
 /* #define PY32F003x8  */  /*!< PY32F003x8  Devices (PY32F003x8  microcontrollers where the Flash memory is 64  Kbytes) */
+/* #define PY32F021x8  */  /*!< PY32F021x8  Devices (PY32F021x8  microcontrollers where the Flash memory is 64  Kbytes) */
 /* #define PY32F030x3  */  /*!< PY32F030x3  Devices (PY32F030x3  microcontrollers where the Flash memory is 8   Kbytes) */
 /* #define PY32F030x4  */  /*!< PY32F030x4  Devices (PY32F030x4  microcontrollers where the Flash memory is 16  Kbytes) */
 /* #define PY32F030x6  */  /*!< PY32F030x6  Devices (PY32F030x6  microcontrollers where the Flash memory is 32  Kbytes) */
@@ -95,6 +97,8 @@ extern "C" {
 #define PY32F002APRE
 #elif (defined(PY32F002Bx5))
 #define PY32F002BPRE
+#elif (defined(PY32F021x8))
+#define PY32F021PRE
 #elif (defined(PY32F030x3) || defined(PY32F030x4) || defined(PY32F030x6) || defined(PY32F030x7) || defined(PY32F030x8))
 #define PY32F030PRE
 #elif (defined(PY32F031x4) || defined(PY32F031x6) || defined(PY32F031x7) || defined(PY32F031x8))
@@ -136,6 +140,8 @@ extern "C" {
 #include "py32f003x6.h"
 #elif defined(PY32F003x8)
 #include "py32f003x8.h"
+#elif defined(PY32F021x8)
+#include "py32f021x8.h"
 #elif defined(PY32F030x3)
 #include "py32f030x3.h"
 #elif defined(PY32F030x4)

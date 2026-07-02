@@ -58,7 +58,7 @@ int main(void)
   {
   }
 
-  /* Configure the system clock to use HSE, PCLK not divided, HCLK divided by 2 */
+  /* Configure the system clock */
   APP_SystemClockConfig();
 
   /* Infinite loop */
@@ -85,9 +85,11 @@ static void APP_SystemClockConfig(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;                               /* Open HSE */
   RCC_OscInitStruct.HSEFreq = RCC_HSE_16_32MHz;
   /* RCC_OscInitStruct.LSIState = RCC_LSI_OFF; */                        /* Close LSI */
+#if defined(RCC_LSE_SUPPORT)
   /* RCC_OscInitStruct.LSEState = RCC_LSE_OFF; */                        /* Close LSE */
-  /*RCC_OscInitStruct.LSEDriver = RCC_LSEDRIVE_MEDIUM;*/
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_OFF;                     /* Close PLL */
+  /* RCC_OscInitStruct.LSEDriver = RCC_LSEDRIVE_MEDIUM;*/
+#endif
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_OFF;                          /* Close PLL */
   /*RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;*/
   /*RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;*/
   /* Configure oscillator */

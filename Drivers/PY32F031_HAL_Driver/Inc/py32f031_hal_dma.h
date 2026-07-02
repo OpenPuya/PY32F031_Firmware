@@ -303,12 +303,17 @@ typedef struct __DMA_HandleTypeDef
 #define DMA_CHANNEL_MAP_TIM16_UP          0x00000019U
 #define DMA_CHANNEL_MAP_TIM17_CH1         0x0000001AU
 #define DMA_CHANNEL_MAP_TIM17_UP          0x0000001BU
+#if defined(USART3)
 #define DMA_CHANNEL_MAP_USART3_TX         0x0000001CU
 #define DMA_CHANNEL_MAP_USART3_RX         0x0000001DU
+#endif
+#if defined(I2C2)
 #define DMA_CHANNEL_MAP_I2C2_TX           0x0000001EU
 #define DMA_CHANNEL_MAP_I2C2_RX           0x0000001FU
+#endif
+#if defined(LCD)
 #define DMA_CHANNEL_MAP_LCD               0x00000020U
-
+#endif
 #define DMA_CHANNEL_MAP_END               0x00000021U
 
 /**

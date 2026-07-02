@@ -154,6 +154,7 @@ HAL_StatusTypeDef HAL_OPA_DeInit(OPA_HandleTypeDef *hopa)
   {
     /* Check the parameter */
     assert_param(IS_OPA_ALL_INSTANCE(hopa->Instance));
+#if defined(OPA_CR_OPA1EN)    
     if(hopa->Init.Part == OPA1)
     {
       /* Disable the selected opa output */
@@ -164,7 +165,13 @@ HAL_StatusTypeDef HAL_OPA_DeInit(OPA_HandleTypeDef *hopa)
       /* to HAL_OPA_STATE_RESET */
       hopa->State = HAL_OPA_STATE_RESET;
     }
+#endif
+#if defined(OPA_CR_OPA2EN)
+  #if defined(OPA_CR_OPA1EN) 
     else if(hopa->Init.Part == OPA2)
+  #else
+    if(hopa->Init.Part == OPA2)
+  #endif
     {
       /* Disable the selected opa output */
       CLEAR_BIT (OPA->OENR, OPA_OENR_OPA2OEN);
@@ -175,7 +182,7 @@ HAL_StatusTypeDef HAL_OPA_DeInit(OPA_HandleTypeDef *hopa)
       /* to HAL_OPA_STATE_RESET */
       hopa->State = HAL_OPA_STATE_RESET;
     }
-   
+#endif
     /* DeInit the low level hardware */   
 #if (USE_HAL_OPA_REGISTER_CALLBACKS == 1)
     if(hopa->MspDeInitCallback == NULL)
@@ -275,6 +282,7 @@ HAL_StatusTypeDef HAL_OPA_Start(OPA_HandleTypeDef *hopa)
     
     if(hopa->State == HAL_OPA_STATE_READY)
     {
+#if defined(OPA_CR_OPA1EN)      
       if(hopa->Init.Part == OPA1)
       {   
         /* Enable the selected opa */
@@ -286,7 +294,13 @@ HAL_StatusTypeDef HAL_OPA_Start(OPA_HandleTypeDef *hopa)
         /* From HAL_OPA_STATE_READY to HAL_OPA_STATE_BUSY */
         hopa->State = HAL_OPA_STATE_BUSY;
       }
+#endif  
+#if defined(OPA_CR_OPA2EN)
+  #if defined(OPA_CR_OPA1EN)
       else if(hopa->Init.Part == OPA2)
+  #else
+      if(hopa->Init.Part == OPA2)
+  #endif
       {
         /* Enable the selected opa */
         SET_BIT (OPA->CR, OPA_CR_OPA2EN);
@@ -297,6 +311,7 @@ HAL_StatusTypeDef HAL_OPA_Start(OPA_HandleTypeDef *hopa)
         /* From HAL_OPA_STATE_READY to HAL_OPA_STATE_BUSY */
         hopa->State = HAL_OPA_STATE_BUSY;
       }
+#endif
     }
     else
     {
@@ -332,6 +347,7 @@ HAL_StatusTypeDef HAL_OPA_Stop(OPA_HandleTypeDef *hopa)
 
     if(hopa->State == HAL_OPA_STATE_BUSY)
     {
+#if defined(OPA_CR_OPA1EN)      
       if(hopa->Init.Part == OPA1)
       {
         /* Disable the selected opa output */
@@ -342,7 +358,13 @@ HAL_StatusTypeDef HAL_OPA_Stop(OPA_HandleTypeDef *hopa)
         /* From HAL_OPA_STATE_BUSY to HAL_OPA_STATE_READY */
         hopa->State = HAL_OPA_STATE_READY;
       }
+#endif      
+#if defined(OPA_CR_OPA2EN)
+  #if defined(OPA_CR_OPA1EN)  
       else if(hopa->Init.Part == OPA2)
+  #else
+      if(hopa->Init.Part == OPA2)
+  #endif
       {
         /* Disable the selected opa output */
         CLEAR_BIT (OPA->OENR, OPA_OENR_OPA2OEN);
@@ -353,6 +375,7 @@ HAL_StatusTypeDef HAL_OPA_Stop(OPA_HandleTypeDef *hopa)
         /* From HAL_OPA_STATE_BUSY to HAL_OPA_STATE_READY */
         hopa->State = HAL_OPA_STATE_READY;
       }
+#endif
     }
     else
     {

@@ -105,6 +105,7 @@ uint32_t LL_I2C_DeInit(I2C_TypeDef *I2Cx)
     /* Release reset of I2C clock */
     LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_I2C1);
   }
+#if defined(I2C2)
   else if ( I2Cx == I2C2 )  
   {
     /* Force reset of I2C clock */
@@ -113,6 +114,7 @@ uint32_t LL_I2C_DeInit(I2C_TypeDef *I2Cx)
     /* Release reset of I2C clock */
     LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_I2C2);    
   }
+#endif
   else
   {
     status = ERROR;

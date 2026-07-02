@@ -3292,7 +3292,6 @@ static void SPI_2linesRxISR_8BIT(struct __SPI_HandleTypeDef *hspi)
 #if (USE_SPI_CRC != 0U)
     if (hspi->Init.CRCCalculation == SPI_CRCCALCULATION_ENABLE)
     {
-      SET_BIT(hspi->Instance->CR2, SPI_RXFIFO_THRESHOLD);
       hspi->RxISR =  SPI_2linesRxISR_8BITCRC;
       return;
     }

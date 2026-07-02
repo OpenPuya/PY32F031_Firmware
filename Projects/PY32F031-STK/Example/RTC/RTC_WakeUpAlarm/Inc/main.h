@@ -46,7 +46,7 @@ extern "C" {
 #define RTC_CLOCK_SOURCE_LSI
 
 /* Exported variables prototypes ---------------------------------------------*/
-extern RTC_HandleTypeDef RTCinit;
+extern RTC_HandleTypeDef RtcHandle;
 
 /* Exported functions prototypes ---------------------------------------------*/
 void APP_ErrorHandler(void);

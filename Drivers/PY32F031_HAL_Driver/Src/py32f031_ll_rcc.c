@@ -126,7 +126,7 @@ ErrorStatus LL_RCC_DeInit(void)
 
   /* Reset whole CR register but HSI in 2 steps in case HSEBYP is set */
   LL_RCC_WriteReg(CR, RCC_CR_HSION);
-  while (LL_RCC_HSE_IsReady() != 0U)
+  while (((READ_BIT(RCC->CR, RCC_CR_HSERDY) == (RCC_CR_HSERDY)) ? 1UL : 0UL) != 0U)
   {}
   LL_RCC_WriteReg(CR, RCC_CR_HSION);
 #if defined(RCC_PLL_SUPPORT)
@@ -217,12 +217,14 @@ uint32_t LL_RCC_GetMCOClockFreq(uint32_t MCOx)
   case LL_RCC_MCOSOURCE_HSI:         /* MCO Clock is HSI */
     mco_frequency = LL_RCC_HSI_GetFreq();
     break;
+  #if defined(RCC_HSE_SUPPORT)
   case LL_RCC_MCOSOURCE_HSE:         /* MCO Clock is HSE */
     if (LL_RCC_HSE_IsReady() == 1U)
     {
       mco_frequency = HSE_VALUE;
     }
     break;
+  #endif
 #if defined(RCC_PLL_SUPPORT)
   case LL_RCC_MCOSOURCE_PLLCLK:      /* MCO Clock is PLLCLK */
     mco_frequency = RCC_PLL_GetFreqDomain_SYS();
@@ -449,6 +451,7 @@ uint32_t LL_RCC_GetRTCClockFreq(void)
     }
     break;
 
+#if defined(RCC_HSE_SUPPORT)
   case LL_RCC_RTC_CLKSOURCE_HSE_DIV128:       /* HSE/128 clock used as RTC clock source */
     if (LL_RCC_HSE_IsReady() == 1U)
     {
@@ -456,6 +459,7 @@ uint32_t LL_RCC_GetRTCClockFreq(void)
     }
 
     break;
+#endif
 
   case LL_RCC_RTC_CLKSOURCE_NONE:             /* No clock used as RTC clock source */
   default:
@@ -489,9 +493,11 @@ uint32_t RCC_GetSystemClockFreq(void)
   /* Get SYSCLK source -------------------------------------------------------*/
   switch (LL_RCC_GetSysClkSource())
   {
+#if defined(RCC_HSE_SUPPORT)    
   case LL_RCC_SYS_CLKSOURCE_STATUS_HSE:     /* HSE used as system clock  source */
     frequency = HSE_VALUE;
     break;
+#endif
 #if defined(RCC_PLL_SUPPORT)
   case LL_RCC_SYS_CLKSOURCE_STATUS_PLL:     /* PLL used as system clock  source */
     frequency = RCC_PLL_GetFreqDomain_SYS();
@@ -549,10 +555,11 @@ uint32_t RCC_PLL_GetFreqDomain_SYS(void)
 
   switch (pllsource)
   {
+#if defined(RCC_HSE_SUPPORT)
   case LL_RCC_PLLSOURCE_HSE:  /* HSE used as PLL clock source */
     pllinputfreq = HSE_VALUE;
     break;
-
+#endif
   case LL_RCC_PLLSOURCE_HSI:  /* HSI used as PLL clock source */
   default:
     pllinputfreq = LL_RCC_HSI_GetFreq();

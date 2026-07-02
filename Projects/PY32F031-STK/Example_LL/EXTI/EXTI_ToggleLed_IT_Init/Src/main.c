@@ -57,7 +57,7 @@ int main(void)
   /* Initialize LED */
   BSP_LED_Init(LED_GREEN);
   
-  /* Configure EXTI0 (connected to PB0 pin) in interrupt mode */
+  /* Configure EXTI1 (connected to PB1 pin) in interrupt mode */
   APP_ConfigureEXTI();
 
   while (1)
@@ -97,7 +97,7 @@ static void APP_SystemClockConfig(void)
 }
 
 /**
-  * @brief  Configure EXTI0 (connected to PB0 pin) in interrupt mode
+  * @brief  Configure EXTI1 (connected to PB1 pin) in interrupt mode
   * @param  None
   * @retval None
   */
@@ -108,23 +108,23 @@ static void APP_ConfigureEXTI(void)
   /* Enable GPIOB clock */
   LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOB);
 
-  /* Configure PB0 as input mode */
-  GPIO_InitStruct.Pin = LL_GPIO_PIN_0;
+  /* Configure PB1 as input mode */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_1;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
   LL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /* Set EXTI0 to connected to PB0 pin */
-  LL_EXTI_SetEXTISource(LL_EXTI_CONFIG_PORTB,LL_EXTI_CONFIG_LINE0);
+  /* Set EXTI1 to connected to PB1 pin */
+  LL_EXTI_SetEXTISource(LL_EXTI_CONFIG_PORTB,LL_EXTI_CONFIG_LINE1);
 
-  /* Set EXTI0 to interrupt mode, falling edge trigger */
-  EXTI_InitStruct.Line = LL_EXTI_LINE_0;
+  /* Set EXTI1 to interrupt mode, falling edge trigger */
+  EXTI_InitStruct.Line = LL_EXTI_LINE_1;
   EXTI_InitStruct.LineCommand = ENABLE;
   EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
   EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;
   LL_EXTI_Init(&EXTI_InitStruct);
 
-  /* Enable and set EXTI line0 Interrupt to the lowest priority */
+  /* Enable interrupt */
   NVIC_SetPriority(EXTI0_1_IRQn, 0);
   NVIC_EnableIRQ(EXTI0_1_IRQn);
 }

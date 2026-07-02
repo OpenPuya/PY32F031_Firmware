@@ -191,15 +191,21 @@ static void APP_SystemClockConfig(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /* Oscillator configuration */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE; /* Select oscillators HSE, HSI, LSI, LSE */
+#if defined(RCC_LSE_SUPPORT)
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE; /* Select oscillator HSE, HSI, LSI, LSE */
+#else
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI; /* Select oscillator HSE, HSI, LSI */
+#endif
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;                          /* Enable HSI */
   RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;                          /* HSI not divided */
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_8MHz;  /* Configure HSI clock as 8MHz */
   RCC_OscInitStruct.HSEState = RCC_HSE_OFF;                         /* Disable HSE */
   /*RCC_OscInitStruct.HSEFreq = RCC_HSE_16_32MHz;*/
   RCC_OscInitStruct.LSIState = RCC_LSI_OFF;                         /* Disable LSI */
-  RCC_OscInitStruct.LSEState = RCC_LSE_OFF;                         /* Disable LSE */
+#if defined(RCC_LSE_SUPPORT)
+  RCC_OscInitStruct.LSEState = RCC_LSE_OFF;                         /* Close LSE */
   /*RCC_OscInitStruct.LSEDriver = RCC_LSEDRIVE_MEDIUM;*/
+#endif
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_OFF;                     /* Disable PLL */
   /*RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_NONE;*/
   /*RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;*/

@@ -72,7 +72,7 @@ static void APP_GpioConfig(void)
 {
   GPIO_InitTypeDef  GPIO_InitStruct = {0};
 
-  LED_GPIO_CLK_ENABLE();                                 /* Enable GPIOB clock */
+  LED_GPIO_CLK_ENABLE();                                 /* Enable GPIO clock */
 
   GPIO_InitStruct.Pin = LED_GPIO_PIN;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;            /* Push-pull output */

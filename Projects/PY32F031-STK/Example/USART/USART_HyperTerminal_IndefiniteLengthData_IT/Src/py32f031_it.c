@@ -98,19 +98,30 @@ void USART2_IRQHandler(void)
   if ((__HAL_UART_GET_FLAG(&UartHandle, UART_FLAG_RXNE) != RESET) && \
       (__HAL_UART_GET_IT_SOURCE(&UartHandle, UART_IT_RXNE) != RESET))
   {
-    RxBuf[RxLen++] = (uint8_t)(UartHandle.Instance->DR & (uint8_t)0x00FF);
+    /* Receive data */
+    aRxBuffer[cRxIndex] = (uint8_t)(UartHandle.Instance->DR & (uint8_t)0x00FF);
+
+    /* Wait SR_TXE bit set 1 */
+    while(__HAL_UART_GET_FLAG(&UartHandle, UART_FLAG_TXE) == RESET)
+    {
+    }
+    
+    /* Send received data */
+    UartHandle.Instance->DR = aRxBuffer[cRxIndex];
+    cRxIndex++;
+    if(cRxIndex > (RX_MAX_LEN - 1))
+    {
+      cRxIndex = (RX_MAX_LEN - 1);
+    }
   }
   
-  /* Idle frame detect */
-  if ((__HAL_UART_GET_FLAG(&UartHandle, UART_FLAG_IDLE) != RESET) && \
-      (__HAL_UART_GET_IT_SOURCE(&UartHandle, UART_IT_IDLE) != RESET))
+  if(__HAL_UART_GET_FLAG(&UartHandle, UART_FLAG_ORE) == SET)
   {
-    __HAL_UART_CLEAR_IDLEFLAG(&UartHandle);
+    /* Clearing the ORE bit */
+    __HAL_UART_CLEAR_OREFLAG(&UartHandle);
     
-    CheckFlag = 1;             /* Received an idle frame and enabled the check to
-                                  see if it is a single frame data receiving endԠ*/
-    CheckLen = RxLen;          /* Obtain the length of received single frame data */
-    TickStart = HAL_GetTick(); /* Record the current time (for timeout judgment) */
+    /* Error callback function */
+    APP_UsartErrorCallback();
   }
 }
 /************************ (C) COPYRIGHT Puya *****END OF FILE******************/

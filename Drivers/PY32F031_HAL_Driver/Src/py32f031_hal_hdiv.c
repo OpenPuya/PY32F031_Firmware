@@ -149,7 +149,7 @@ HAL_StatusTypeDef HAL_HDIV_DeInit(HDIV_HandleTypeDef *hdiv)
   * @param  hdiv HDIV handle
   * @retval None
   */
-void HAL_HDIV_MspInit(HDIV_HandleTypeDef *hdiv)
+__weak void HAL_HDIV_MspInit(HDIV_HandleTypeDef *hdiv)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hdiv);
@@ -164,7 +164,7 @@ void HAL_HDIV_MspInit(HDIV_HandleTypeDef *hdiv)
   * @param  hdiv HDIV handle
   * @retval None
   */
-void HAL_HDIV_MspDeInit(HDIV_HandleTypeDef *hdiv)
+__weak void HAL_HDIV_MspDeInit(HDIV_HandleTypeDef *hdiv)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hdiv);

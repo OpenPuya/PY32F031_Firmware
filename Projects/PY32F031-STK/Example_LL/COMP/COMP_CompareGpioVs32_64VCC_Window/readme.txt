@@ -3,13 +3,13 @@
                                 Sample Description
 ================================================================================
 功能描述：
-此样例演示了COMP比较器的window功能，比较器1负端用比较器2的负端(PA3)作为输入，
-VREFCMP作为比较器正端输入，当PA3的电压值小于1.65V时,LED灯灭，大于1.65V时,LED灯亮。
+此样例演示了COMP比较器的window功能，比较器1正端用比较器2的正端(PA3)作为输入，
+VREFCMP作为比较器负端输入，当PA3的电压值小于1.65V时,LED灯灭，大于1.65V时,LED灯亮。
 
 Function descriptions:
-This example demonstrates the window function of the COMP. The negative terminal
-of the COMP1 is connected the negative terminal of the COMP2(PA3).VREFCMP used 
-as the positive terminal of the COMP1.When the voltage value of PA3 is greater 
+This example demonstrates the window function of the COMP. The plus terminal
+of the COMP1 is connected the plus terminal of the COMP2(PA3).VREFCMP used 
+as the minus terminal of the COMP1.When the voltage value of PA3 is greater 
 than 1.65V, the LED is on, and when it is less than 1.65V, the LED is off.
 ================================================================================
 测试环境：

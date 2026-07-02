@@ -34,8 +34,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-LL_UTILS_PLLInitTypeDef UTILS_PLLInitStruct = {LL_RCC_PLL_MUL_3};
-LL_UTILS_ClkInitTypeDef UTILS_ClkInitStruct = {LL_RCC_SYSCLK_DIV_1, LL_RCC_APB1_DIV_1};
 /* Private user code ---------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -72,15 +70,48 @@ static void APP_SystemClockConfig(void)
 {
   /* Enable and initialize HSI */
   LL_RCC_HSI_Enable();
-  LL_RCC_HSI_SetCalibFreq(LL_RCC_HSICALIBRATION_16MHz);
+  LL_RCC_HSI_SetCalibFreq(LL_RCC_HSICALIBRATION_24MHz);
   while(LL_RCC_HSI_IsReady() != 1)
   {
   }
-  /* Configure system clock with HSI as clock source of the PLL and initialize it */
-  LL_PLL_ConfigSystemClock_HSI(&UTILS_PLLInitStruct, &UTILS_ClkInitStruct);
+  /* Configure HSISYS as system clock */
+  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_HSISYS);
+  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_HSISYS)
+  {
+  }
+  /* PLL multiplication factor of 3 using HSI (24MHz) */
+  LL_RCC_PLL_Disable();
+  while(LL_RCC_PLL_IsReady() != 0)
+  {
+  }
+  LL_RCC_PLL_SetMainSource(LL_RCC_PLLSOURCE_HSI);
+  LL_RCC_PLL_SetMulFactor(LL_RCC_PLL_MUL_3);
+  LL_RCC_PLL_Enable();
+  while(LL_RCC_PLL_IsReady() != 1)
+  {
+  }
+  
+  /* Set flash latency */
+  LL_FLASH_SetLatency(LL_FLASH_LATENCY_2);
+  while(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_2)
+  {
+  }
+  
+  /* Configure AHB prescaler */
+  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
+
+  /* Configure PLL as system clock and initialize */
+  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
+  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
+  {
+  }
+
+  /* Configure APB1 prescaler and initialize */
+  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
+  LL_Init1msTick(72000000);
 
   /* Update the SystemCoreClock global variable(which can be updated also through SystemCoreClockUpdate function) */
-  LL_SetSystemCoreClock(48000000);
+  LL_SetSystemCoreClock(72000000);
 }
 
 /**

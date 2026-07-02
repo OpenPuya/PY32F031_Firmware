@@ -24,19 +24,19 @@ GCC Version: GNU Arm Embedded Toolchain 10.3-2021.10
 使用步骤：
 1. 编译下载程序到MCU，并运行；
 2. 按下用户按键；
-3. 用示波器监测PA08引脚上的频率，观察是否和配置的PLL频率（32MHz）一致。
+3. 用示波器监测PA08引脚上的频率，观察是否和配置的PLL频率（72MHz）一致。
 
 Example execution steps:
 1. Compile and download the program to the MCU and run it.
 2. Press the user button.
 3. Use an oscilloscope to monitor the frequency on the PA08 pin and check if it 
-   matches the configured PLL frequency (32MHz).
+   matches the configured PLL frequency (72MHz).
 ================================================================================
 注意事项：
-1. 注意PLL的输入时钟源频率在2倍频时必须大于等于12MHz，3倍频时必须大于等于16MHz。
+1. 注意PLL的输入时钟源频率在2倍频时必须大于等于16MHz，3倍频时必须大于等于22MHz。
 
 Notes:
 1. Note that the PLL input clock source frequency must be greater than or equal 
-   to 12MHz for 2x PLL multiplication, and greater than or equal to 16MHz for 
+   to 16MHz for 2x PLL multiplication, and greater than or equal to 22MHz for 
    3x PLL multiplication.
 ================================================================================

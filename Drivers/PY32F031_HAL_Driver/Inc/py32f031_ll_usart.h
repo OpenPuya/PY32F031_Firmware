@@ -605,7 +605,7 @@ __STATIC_INLINE uint32_t LL_USART_GetDataWidth(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetOverSampling(USART_TypeDef *USARTx, uint32_t OverSampling)
 {
-  MODIFY_REG(USARTx->CR1, USART_CR3_OVER8, OverSampling);
+  MODIFY_REG(USARTx->CR3, USART_CR3_OVER8, OverSampling);
 }
 
 /**
@@ -618,7 +618,7 @@ __STATIC_INLINE void LL_USART_SetOverSampling(USART_TypeDef *USARTx, uint32_t Ov
   */
 __STATIC_INLINE uint32_t LL_USART_GetOverSampling(USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR3_OVER8));
+  return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_OVER8));
 }
 
 #endif /* USART_OverSampling_Feature */

@@ -89,7 +89,7 @@ extern "C" {
 /** @defgroup OPA_LL_EF_CONFIGURATION_OPA_INSTANCE Configuration of OPA hierarchical scope: OPA instance
   * @{
   */
-
+#if defined(OPA_CR_OPA1EN)
 /**
   * @brief  Enable the OPA1.
   * @rmtoll CR      OPA1EN            LL_OPA1_Enable
@@ -155,7 +155,9 @@ __STATIC_INLINE uint32_t LL_OPA1_IsEnabledOutput(OPA_TypeDef *OPAx)
 {
   return (READ_BIT(OPAx->OENR, OPA_OENR_OPA1OEN) == OPA_OENR_OPA1OEN);
 }
+#endif
 
+#if defined(OPA_CR_OPA2EN)
 /**
   * @brief  Enable the OPA2.
   * @rmtoll CR      OPA2EN              LL_OPA2_Enable
@@ -221,6 +223,7 @@ __STATIC_INLINE uint32_t LL_OPA2_IsEnabledOutput(OPA_TypeDef *OPAx)
 {
   return (READ_BIT(OPAx->OENR, OPA_OENR_OPA2OEN) == OPA_OENR_OPA2OEN);
 }
+#endif
 
 /**
   * @}

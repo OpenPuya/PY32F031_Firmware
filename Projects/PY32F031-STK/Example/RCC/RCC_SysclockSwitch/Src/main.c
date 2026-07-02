@@ -51,7 +51,7 @@ int main(void)
   /* Initialize button */
   BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_GPIO);
   
-  /* Configure the system clock to default HSI 8MHz, and then switch to HSI 16MHz */
+  /* Configure the system clock to HSI 16MHz */
   APP_SystemClockConfig();
 
   /* Configure PA08 pin as MCO1 function to output the system clock */
@@ -82,16 +82,22 @@ static void APP_SystemClockConfig(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /* Oscillator configuration */
+#if defined(RCC_LSE_SUPPORT)
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE; /* Select oscillator HSE, HSI, LSI, LSE */
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;                          /* Enable HSI */
-  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;                          /* HSI 1 frequency division */
+#else
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI; /* Select oscillator HSE, HSI, LSI */
+#endif
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;                           /* Enable HSI */
+  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;                           /* HSI 1 frequency division */
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_16MHz;  /* Configure HSI clock 16MHz */
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;                         /* Open HSE */
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;                           /* Open HSE */
   RCC_OscInitStruct.HSEFreq = RCC_HSE_16_32MHz;
   RCC_OscInitStruct.LSIState = RCC_LSI_OFF;                          /* Close LSI */
+#if defined(RCC_LSE_SUPPORT)
   RCC_OscInitStruct.LSEState = RCC_LSE_OFF;                         /* Close LSE */
   /*RCC_OscInitStruct.LSEDriver = RCC_LSEDRIVE_MEDIUM;*/
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_OFF;                     /* Close PLL */
+#endif
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_OFF;                      /* Close PLL */
   /*RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;*/
   /*RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;*/
   /* Configure oscillator */

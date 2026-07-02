@@ -111,9 +111,11 @@ typedef struct
   *           HW set-up.
   * @{
   */
+#if defined(RCC_HSE_SUPPORT)
 #if !defined  (HSE_VALUE)
 #define HSE_VALUE    24000000U   /*!< Value of the HSE oscillator in Hz */
 #endif /* HSE_VALUE */
+#endif
 
 #if !defined  (HSI_VALUE)
 #define HSI_VALUE    8000000U  /*!< Value of the HSI oscillator in Hz */
@@ -138,7 +140,9 @@ typedef struct
   */
 #define LL_RCC_CICR_LSIRDYC                RCC_CICR_LSIRDYC     /*!< LSI Ready Interrupt Clear */
 #define LL_RCC_CICR_HSIRDYC                RCC_CICR_HSIRDYC     /*!< HSI Ready Interrupt Clear */
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_CICR_HSERDYC                RCC_CICR_HSERDYC     /*!< HSE Ready Interrupt Clear */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define LL_RCC_CICR_PLLRDYC                RCC_CICR_PLLRDYC     /*!< PLL Ready Interrupt Clear */
 #endif
@@ -146,8 +150,9 @@ typedef struct
 #define LL_RCC_CICR_LSERDYC                RCC_CICR_LSERDYC     /*!< LSE Ready Interrupt Clear */
 #define LL_RCC_CICR_LSECSSC                RCC_CICR_LSECSSC     /*!< LSE Clock Security System Interrupt Clear */
 #endif
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_CICR_CSSC                   RCC_CICR_CSSC        /*!< Clock Security System Interrupt Clear */
-
+#endif
 /**
   * @}
   */
@@ -158,7 +163,9 @@ typedef struct
   */
 #define LL_RCC_CIFR_LSIRDYF                RCC_CIFR_LSIRDYF     /*!< LSI Ready Interrupt flag */
 #define LL_RCC_CIFR_HSIRDYF                RCC_CIFR_HSIRDYF     /*!< HSI Ready Interrupt flag */
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_CIFR_HSERDYF                RCC_CIFR_HSERDYF     /*!< HSE Ready Interrupt flag */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define LL_RCC_CIFR_PLLRDYF                RCC_CIFR_PLLRDYF     /*!< PLL Ready Interrupt flag */
 #endif
@@ -166,8 +173,9 @@ typedef struct
 #define LL_RCC_CIFR_LSERDYF                RCC_CIFR_LSERDYF     /*!< LSE Ready Interrupt flag */
 #define LL_RCC_CIFR_LSECSSF                RCC_CIFR_LSECSSF     /*!< LSE Clock Security System Interrupt flag */
 #endif
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_CIFR_CSSF                   RCC_CIFR_CSSF        /*!< Clock Security System Interrupt flag */
-
+#endif
 #define LL_RCC_CSR_OBLRSTF                 RCC_CSR_OBLRSTF    /*!< OBL reset flag */
 #define LL_RCC_CSR_PINRSTF                 RCC_CSR_PINRSTF    /*!< PIN reset flag */
 #define LL_RCC_CSR_SFTRSTF                 RCC_CSR_SFTRSTF    /*!< Software Reset flag */
@@ -189,7 +197,9 @@ typedef struct
 #define LL_RCC_CIER_LSERDYIE               RCC_CIER_LSERDYIE      /*!< LSE Ready Interrupt Enable */
 #endif
 #define LL_RCC_CIER_HSIRDYIE               RCC_CIER_HSIRDYIE      /*!< HSI Ready Interrupt Enable */
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_CIER_HSERDYIE               RCC_CIER_HSERDYIE      /*!< HSE Ready Interrupt Enable */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define LL_RCC_CIER_PLLRDYIE               RCC_CIER_PLLRDYIE      /*!< PLL Ready Interrupt Enable */
 #endif
@@ -235,7 +245,9 @@ typedef struct
   * @{
   */
 #define LL_RCC_SYS_CLKSOURCE_HSISYS        0x00000000U                        /*!< HSISYS selection as system clock */
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_SYS_CLKSOURCE_HSE           RCC_CFGR_SW_0                      /*!< HSE selection as system clock */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define LL_RCC_SYS_CLKSOURCE_PLL           RCC_CFGR_SW_1                      /*!< PLL selection as system clock */
 #endif
@@ -251,7 +263,9 @@ typedef struct
   * @{
   */
 #define LL_RCC_SYS_CLKSOURCE_STATUS_HSISYS 0x00000000U                         /*!< HSISYS used as system clock */
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_SYS_CLKSOURCE_STATUS_HSE    RCC_CFGR_SWS_0                      /*!< HSE used as system clock */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define LL_RCC_SYS_CLKSOURCE_STATUS_PLL    RCC_CFGR_SWS_1                      /*!< PLL used as system clock */
 #endif
@@ -313,7 +327,9 @@ typedef struct
 #define LL_RCC_MCOSOURCE_SYSCLK           RCC_CFGR_MCOSEL_0                      /*!< SYSCLK selection as MCO source */
 #define LL_RCC_MCOSOURCE_HSI10M           RCC_CFGR_MCOSEL_1                      /*!< HSI10M selection as MCO source */
 #define LL_RCC_MCOSOURCE_HSI              (RCC_CFGR_MCOSEL_1| RCC_CFGR_MCOSEL_0) /*!< HSI selection as MCO source */
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_MCOSOURCE_HSE              RCC_CFGR_MCOSEL_2                      /*!< HSE selection as MCO source */
+#endif
 #if defined(RCC_PLL_SUPPORT)
 #define LL_RCC_MCOSOURCE_PLLCLK           (RCC_CFGR_MCOSEL_2|RCC_CFGR_MCOSEL_0)  /*!< Main PLL selection as MCO source */
 #endif
@@ -422,7 +438,9 @@ typedef struct
 #define LL_RCC_RTC_CLKSOURCE_LSE           RCC_BDCR_RTCSEL_0       /*!< LSE oscillator clock used as RTC clock */
 #endif
 #define LL_RCC_RTC_CLKSOURCE_LSI           RCC_BDCR_RTCSEL_1       /*!< LSI oscillator clock used as RTC clock */
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_RTC_CLKSOURCE_HSE_DIV128    RCC_BDCR_RTCSEL         /*!< HSE oscillator clock divided by 128 used as RTC clock */
+#endif
 /**
   * @}
   */
@@ -443,7 +461,9 @@ typedef struct
   * @{
   */
 #define LL_RCC_PLLSOURCE_HSI               RCC_PLLCFGR_PLLSRC_HSI  /*!< HSI clock selected as PLL entry clock source */
+#if defined(RCC_HSE_SUPPORT)
 #define LL_RCC_PLLSOURCE_HSE               RCC_PLLCFGR_PLLSRC_HSE  /*!< HSE clock selected as PLL entry clock source */
+#endif
 /**
   * @}
   */
@@ -472,6 +492,7 @@ typedef struct
   */
 #endif /* RCC_CCIPR_LPTIMSEL */
 
+#if defined(RCC_HSE_SUPPORT)
 /** @defgroup RCC_HSE_EC_Freq HSE Config
   * @{
   */
@@ -495,7 +516,7 @@ typedef struct
 /**
   * @}
   */
-
+#endif
 /** @defgroup RCC_HSI_EC_Calibration HSI Calibration
 * @{
 */
@@ -616,6 +637,7 @@ typedef struct
   * @{
   */
 
+#if defined(RCC_HSE_SUPPORT)
 /** @defgroup RCC_LL_EF_HSE HSE
   * @{
   */
@@ -724,6 +746,7 @@ __STATIC_INLINE uint32_t LL_RCC_HSE_GetStartupTime(void)
 /**
   * @}
   */
+#endif
 
 /** @defgroup RCC_LL_EF_HSI HSI
   * @{
@@ -1637,6 +1660,7 @@ __STATIC_INLINE void LL_RCC_ClearFlag_HSIRDY(void)
   SET_BIT(RCC->CICR, RCC_CICR_HSIRDYC);
 }
 
+#if defined(RCC_HSE_SUPPORT)
 /**
   * @brief  Clear HSE ready interrupt flag
   * @rmtoll CICR         HSERDYC       LL_RCC_ClearFlag_HSERDY
@@ -1646,6 +1670,8 @@ __STATIC_INLINE void LL_RCC_ClearFlag_HSERDY(void)
 {
   SET_BIT(RCC->CICR, RCC_CICR_HSERDYC);
 }
+#endif
+
 #if defined(RCC_PLL_SUPPORT)
 /**
   * @brief  Clear PLL ready interrupt flag
@@ -1657,6 +1683,7 @@ __STATIC_INLINE void LL_RCC_ClearFlag_PLLRDY(void)
   SET_BIT(RCC->CICR, RCC_CICR_PLLRDYC);
 }
 #endif
+#if defined(RCC_HSE_SUPPORT)
 /**
   * @brief  Clear Clock security system interrupt flag
   * @rmtoll CICR         CSSC          LL_RCC_ClearFlag_HSECSS
@@ -1666,6 +1693,7 @@ __STATIC_INLINE void LL_RCC_ClearFlag_HSECSS(void)
 {
   SET_BIT(RCC->CICR, RCC_CICR_CSSC);
 }
+#endif
 #if defined(RCC_LSE_SUPPORT)
 /**
   * @brief  Clear LSE Clock security system interrupt flag
@@ -1707,7 +1735,7 @@ __STATIC_INLINE uint32_t LL_RCC_IsActiveFlag_HSIRDY(void)
 {
   return ((READ_BIT(RCC->CIFR, RCC_CIFR_HSIRDYF) == (RCC_CIFR_HSIRDYF)) ? 1UL : 0UL);
 }
-
+#if defined(RCC_HSE_SUPPORT)
 /**
   * @brief  Check if HSE ready interrupt occurred or not
   * @rmtoll CIFR         HSERDYF       LL_RCC_IsActiveFlag_HSERDY
@@ -1717,6 +1745,7 @@ __STATIC_INLINE uint32_t LL_RCC_IsActiveFlag_HSERDY(void)
 {
   return ((READ_BIT(RCC->CIFR, RCC_CIFR_HSERDYF) == (RCC_CIFR_HSERDYF)) ? 1UL : 0UL);
 }
+#endif
 #if defined(RCC_PLL_SUPPORT)
 /**
   * @brief  Check if PLL ready interrupt occurred or not
@@ -1728,6 +1757,7 @@ __STATIC_INLINE uint32_t LL_RCC_IsActiveFlag_PLLRDY(void)
   return ((READ_BIT(RCC->CIFR, RCC_CIFR_PLLRDYF) == (RCC_CIFR_PLLRDYF)) ? 1UL : 0UL);
 }
 #endif
+#if defined(RCC_HSE_SUPPORT)
 /**
   * @brief  Check if Clock security system interrupt occurred or not
   * @rmtoll CIFR         CSSF          LL_RCC_IsActiveFlag_HSECSS
@@ -1737,6 +1767,7 @@ __STATIC_INLINE uint32_t LL_RCC_IsActiveFlag_HSECSS(void)
 {
   return ((READ_BIT(RCC->CIFR, RCC_CIFR_CSSF) == (RCC_CIFR_CSSF)) ? 1UL : 0UL);
 }
+#endif
 #if defined(RCC_LSE_SUPPORT)
 /**
   * @brief  Check if LSE Clock security system interrupt occurred or not
@@ -1888,7 +1919,7 @@ __STATIC_INLINE void LL_RCC_EnableIT_HSIRDY(void)
 {
   SET_BIT(RCC->CIER, RCC_CIER_HSIRDYIE);
 }
-
+#if defined(RCC_HSE_SUPPORT)
 /**
   * @brief  Enable HSE ready interrupt
   * @rmtoll CIER         HSERDYIE      LL_RCC_EnableIT_HSERDY
@@ -1898,6 +1929,7 @@ __STATIC_INLINE void LL_RCC_EnableIT_HSERDY(void)
 {
   SET_BIT(RCC->CIER, RCC_CIER_HSERDYIE);
 }
+#endif
 #if defined(RCC_PLL_SUPPORT)
 /**
   * @brief  Enable PLL ready interrupt
@@ -1938,7 +1970,7 @@ __STATIC_INLINE void LL_RCC_DisableIT_HSIRDY(void)
 {
   CLEAR_BIT(RCC->CIER, RCC_CIER_HSIRDYIE);
 }
-
+#if defined(RCC_HSE_SUPPORT)
 /**
   * @brief  Disable HSE ready interrupt
   * @rmtoll CIER         HSERDYIE      LL_RCC_DisableIT_HSERDY
@@ -1948,6 +1980,7 @@ __STATIC_INLINE void LL_RCC_DisableIT_HSERDY(void)
 {
   CLEAR_BIT(RCC->CIER, RCC_CIER_HSERDYIE);
 }
+#endif
 #if defined(RCC_PLL_SUPPORT)
 /**
   * @brief  Disable PLL ready interrupt
@@ -1989,6 +2022,7 @@ __STATIC_INLINE uint32_t LL_RCC_IsEnabledIT_HSIRDY(void)
   return ((READ_BIT(RCC->CIER, RCC_CIER_HSIRDYIE) == (RCC_CIER_HSIRDYIE)) ? 1UL : 0UL);
 }
 
+#if defined(RCC_HSE_SUPPORT)
 /**
   * @brief  Checks if HSE ready interrupt source is enabled or disabled.
   * @rmtoll CIER         HSERDYIE      LL_RCC_IsEnabledIT_HSERDY
@@ -1998,6 +2032,7 @@ __STATIC_INLINE uint32_t LL_RCC_IsEnabledIT_HSERDY(void)
 {
   return ((READ_BIT(RCC->CIER, RCC_CIER_HSERDYIE) == (RCC_CIER_HSERDYIE)) ? 1UL : 0UL);
 }
+#endif
 #if defined(RCC_PLL_SUPPORT)
 /**
   * @brief  Checks if PLL ready interrupt source is enabled or disabled.
